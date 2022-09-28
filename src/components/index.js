@@ -1,0 +1,6 @@
+export {default as Header} from './Header'
+export {default as LandingPage} from './LandingPage'
+export {default as Auth} from './Auth'
+export {default as ForgetPassword} from './ForgetPassword'
+export {default as Retrieve} from './Retrieve'
+export {default as Profile} from './Profile'
