@@ -10,7 +10,7 @@ const CustomSelectInput = ({
   const stylesIfFieldEmpty = "top-1/2 -translate-y-1/2 opacity-0 z-[-1]";
   const stylesIfFieldFull = "-top-2 opacity-100 z-[1]";
   return (
-    <div className=" z-[1]">
+    <div data-aos="flip-up" className=" z-[1]">
       {/* <div
         className={`${
           hasValue ? stylesIfFieldFull : stylesIfFieldEmpty
@@ -26,7 +26,7 @@ const CustomSelectInput = ({
       </div> */}
       <div className="px-2 mb-2">{label}</div>
       <select
-        className={`${className} min-w-[300px] border rounded-lg border-black text-xl p-2 outline-none dark:bg-darkbg1`}
+        className={`${className} min-w-[300px] border rounded-lg border-black text-xl p-2 outline-none dark:bg-darkbg1 dark:border-darktext`}
       >
         <option></option>
         <option>asd</option>

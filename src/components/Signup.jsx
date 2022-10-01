@@ -53,43 +53,49 @@ const Signup = () => {
           </div>
           <div className="flex flex-col md:flex-row gap-4 md:my-10 my-4">
             <div className="">
-              {emailOrPhone === "email" ? (
-                <CustomInputField
-                  register={{
-                    ...register("email", { required: true, maxLength: 30 }),
-                  }}
-                  type="text"
-                  label="Email"
-                  className="w-[300px]"
-                  error={!!errors?.email}
-                  isSubmitSuccessful={isSubmitSuccessful}
-                />
-              ) : (
-                <div className="flex w-[300px] gap-4">
-                  <AutoComplate1
-                    register={register}
-                    type="text"
-                    label="code"
-                    className="w-[70px]"
-                    error={!!errors?.code}
-                    isSubmitSuccessful={isSubmitSuccessful}
-                    watch={watch}
-                    reset={reset}
-                  />
-                  <CustomInputField
-                    register={{
-                      ...register("phone", { required: true, maxLength: 30 }),
-                    }}
-                    type="text"
-                    label="phone"
-                    className="w-[214px]"
-                    error={!!errors?.phone}
-                    isSubmitSuccessful={isSubmitSuccessful}
-                  />
-                </div>
-              )}
+              <div>
+                {emailOrPhone === "email" ? (
+                  <div>
+                    <CustomInputField
+                      register={{
+                        ...register("email", { required: true, maxLength: 30 }),
+                      }}
+                      type="text"
+                      label="Email"
+                      className="w-[300px]"
+                      error={!!errors?.email}
+                      isSubmitSuccessful={isSubmitSuccessful}
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    <div className="flex w-[300px] gap-4">
+                      <AutoComplate1
+                        register={register}
+                        type="text"
+                        label="code"
+                        className="w-[70px]"
+                        error={!!errors?.code}
+                        isSubmitSuccessful={isSubmitSuccessful}
+                        watch={watch}
+                        reset={reset}
+                      />
+                      <CustomInputField
+                        register={{
+                          ...register("phone", { required: true, maxLength: 30 }),
+                        }}
+                        type="text"
+                        label="phone"
+                        className="w-[214px]"
+                        error={!!errors?.phone}
+                        isSubmitSuccessful={isSubmitSuccessful}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
 
-              <div className="flex justify-end m-1">
+              <div data-aos="fade-up" className="flex justify-end m-1">
                 <button
                   type="button"
                   onClick={() =>
@@ -103,7 +109,7 @@ const Signup = () => {
                 </button>
               </div>
             </div>
-            <div className="">
+            <div  className="">
               <CustomInputField
                 register={{
                   ...register("password", { required: true, maxLength: 30 }),

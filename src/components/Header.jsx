@@ -2,12 +2,14 @@ import NavList from "./NavList";
 // import { ReactComponent as Logo } from "../icons/logo.svg";
 import { ReactComponent as DoubleArrowDown } from "../icons/doubleArrowDown.svg";
 import { ReactComponent as DoubleArrowUp } from "../icons/doubleArrowUp.svg";
+import { ReactComponent as LogoLight } from "../icons/logoLight.svg";
 import CustomButton from "./CustomButton";
 import LightDarkToggle from "./LightDarkToggle";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate, useLocation } from "react-router-dom";
 import ProfileProgress from "./ProfileProgress";
+import { useStore } from "../store";
 
 const navData = [
   { idx: 0, title: "Home", to: "/" },
@@ -24,6 +26,7 @@ const Header = ({ refprop }) => {
     query: "(min-width: 1024px)",
   });
   const navigate = useNavigate();
+  const isDark = useStore((state) => state.isDark);
 
   useEffect(() => {
     let activeItem = navData.filter((item) => item.to === location.pathname)[0];
@@ -31,11 +34,18 @@ const Header = ({ refprop }) => {
   }, [location]);
 
   return (
-    <div ref={refprop} className="border-b border-gray-400 sticky top-0 bg-white z-[50]">
+    <div
+      ref={refprop}
+      className="border-b border-gray-400 sticky top-0 bg-white z-[50]"
+    >
       <div className="h-20 bg- dark:bg-darkbg0 dark:text-darktext px-2 sm:px-10 flex justify-between items-center font-bold">
-        <div>
-          <img src="/images/logo.png" alt="logo" height={80} width={80} />
-        </div>
+        {isDark ? (
+          <div>
+            <img src="/images/logoDark.png" alt="logo" height={90} width={90} />
+          </div>
+        ) : (
+          <LogoLight className="w-[80px] h-[80px]" />
+        )}
         {isLg && (
           <div className="">
             <NavList
@@ -51,14 +61,14 @@ const Header = ({ refprop }) => {
               <LightDarkToggle size={36} />
             </div>
           </div>
-          <button className="border-4 hover:border-blue-500 rounded-full border-transparent transition-all duration-300">
+          {/* <button className="border-4 hover:border-blue-500 rounded-full border-transparent transition-all duration-300">
             <img
               src="/images/translate.webp"
               alt="translate"
               width={36}
               height={36}
             />
-          </button>
+          </button> */}
           <CustomButton title="Login" onClick={() => navigate("/auth/login")} />
         </div>
       </div>
@@ -66,8 +76,8 @@ const Header = ({ refprop }) => {
         <div>
           <div
             className={`${
-              isExpanded ? "h-12" : "h-0"
-            } transition-all duration-500  overflow-hidden`}
+              isExpanded ? "h-[52px] py-2" : "h-0"
+            } transition-all duration-500  overflow-hidden  dark:bg-darkbg1 border-t border-gray-500`}
           >
             <NavList
               navData={navData}
@@ -87,11 +97,7 @@ const Header = ({ refprop }) => {
           </button>
         </div>
       )}
-      {
-        location.pathname === '/profile' && (
-          <ProfileProgress persentage={20} />
-        )
-      }
+      {location.pathname === "/profile" && <ProfileProgress persentage={20} />}
     </div>
   );
 };

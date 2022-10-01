@@ -26,6 +26,11 @@ module.exports = {
         custom: "0px 0px 6px 0px #2289FF",
       },
     },
+
+      // 473335
+      // 413620
+      // 524632
+      // 432818
   },
   plugins: [require("tailwind-scrollbar")],
 };

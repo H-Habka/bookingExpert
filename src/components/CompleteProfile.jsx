@@ -16,9 +16,7 @@ const CompleteProfile = () => {
   let serviceCategory = watch("serviceCategory");
   let serviceName = watch("serviceName");
 
-  let watchFields = watch(["time","price", "serviceName", 'serviceCategory'])
-
-
+  let watchFields = watch(["time", "price", "serviceName", "serviceCategory"]);
 
   const onSubmit = (data) => {
     console.log(data);
@@ -34,7 +32,7 @@ const CompleteProfile = () => {
         </h2>
         <h2 className="text-center text-xl font-bold">Get Paid</h2>
         <div>
-          <div className="flex flex-col gap-[20px] mt-[20px]">
+          <div className="flex flex-col gap-[20px] mt-[20px] items-center">
             <div>
               <CustomInputField
                 register={{
@@ -82,13 +80,13 @@ const CompleteProfile = () => {
             <h2 className="text-center text-xl font-bold my-[40px]">
               Add Your Services
             </h2>
-            <div className="flex flex-col gap-[20px]">
+            <div className="flex flex-col gap-[20px] items-center">
               <AddServicesCard />
               <AddServicesCard />
               <AddServicesCard />
             </div>
           </div>
-          <div className="flex flex-col mt-[40px] gap-[20px]">
+          <div className="flex flex-col mt-[40px] gap-[20px] items-center">
             <div>
               <CustomInputField
                 register={{
@@ -136,7 +134,7 @@ const CompleteProfile = () => {
             </div>
             <div>
               <p className="text-center my-[10px]">Time</p>
-              <div className="flex justify-between gap-1">
+              <div data-aos="flip-up" className="flex justify-between gap-1">
                 <TimeItem
                   error={errors.time}
                   amount={15}
@@ -170,7 +168,7 @@ const CompleteProfile = () => {
                   </div>
                 </div>
               </div>
-              <div>
+              <div className="flex flex-col items-center">
                 <div className="">
                   <CustomInputField
                     register={{

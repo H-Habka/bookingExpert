@@ -28,7 +28,7 @@ async function reduce_image_file_size(base64Str, MAX_WIDTH = 450, MAX_HEIGHT = 4
     return resized_base64;
 }
 
-async function image_to_base64(file) {
+export async function image_to_base64(file) {
     let result_base64 = await new Promise((resolve) => {
         let fileReader = new FileReader();
         fileReader.onload = (e) => resolve(fileReader.result);

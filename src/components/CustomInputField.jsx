@@ -17,7 +17,7 @@ const CustomInputField = ({
   const [passwordVisibility, setPasswordVisibility] = useState(false);
   const isPassword = type === "password"
   return (
-    <div className="w-fit relative group">
+    <div data-aos="flip-up" className="w-fit relative group">
       <input
         {...register}
         type={passwordVisibility ? "text" : type}

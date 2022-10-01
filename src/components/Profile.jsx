@@ -137,7 +137,7 @@ const Profile = () => {
               isSubmitSuccessful={isSubmitSuccessful}
             />
           </div>
-          <div>
+          <div data-aos="flip-up">
             <p className="text-lg font-semibold text-center my-4">
               Choose Your Account Type
             </p>
@@ -201,25 +201,25 @@ const Profile = () => {
             </div>
           </div>
           <div className="w-full">
-            <div className="flex justify-between flex-col md:flex-row ">
+            <div className="flex justify-around flex-col md:flex-row items-center">
               <CustomSelectInput label="Service Category" />
               <CustomSelectInput label="Service Sub Category" />
             </div>
           </div>
-          <div className="w-full">
-            <p className="px-2 mb-2">Bio</p>
+          <div data-aos="flip-up" className="w-fit mx-auto xs:w-full ">
+            <p className="px-2 mb-2 ">Bio</p>
             <textarea
               rows={5}
-              className="w-full outline-none resize-none border border-black rounded-xl text-xl p-4"
+              className=" outline-none resize-none border border-black rounded-xl text-xl p-4 dark:bg-darkbg1 dark:border-darktext min-w-[300px] w-[300px] xs:w-full"
             ></textarea>
           </div>
-          <div className="w-full">
+          <div data-aos="flip-up" className="w-full">
             <label className="flex justify-between items-center cursor-pointer">
-              <p className="text-xl font-semibold ">
+              <p className="flex-[4/6] text-xl font-semibold ">
                 Do you want to do home service ?
               </p>
               <div
-                className={`w-10 ${
+                className={`w-10 flex-[2/6] ${
                   homeServices ? "bg-green-200" : "bg-red-200"
                 }  rounded-full flex border border-gray-400 transition-all duration-300 `}
               >

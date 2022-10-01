@@ -28,20 +28,21 @@ const EnterCode = () => {
   };
   console.log(code);
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center py-10">
       <div>
         <div className="flex flex-col justify-center items-center mt-10 ">
           <h2 className="text-3xl font-bold">Enter The Code</h2>
         </div>
         <div>
-          <div className="flex  p-4 mt-10 mb-2 w-fit ">
+          <div className="flex  p-2 sm:p-4 mt-10 mb-2 w-fit ">
             {Array(length || 0)
               .fill()
               .map((_, idx) => {
                 return (
                   <div
+                  data-aos="zoom-out"
                     key={idx}
-                    className="w-12 h-20 border border-black rounded-lg mx-4"
+                    className="sm:w-12 sm:h-20 w-10 h-20  border border-black rounded-lg mx-1 xs:mx-2 sm:mx-4"
                   >
                     <input
                       ref={refsArray[idx]}
@@ -77,7 +78,7 @@ const EnterCode = () => {
                 );
               })}
           </div>
-          <div className="my-5 flex justify-center">
+          <div data-aos="fade-up" className="my-5 flex justify-center">
             <button
               onClick={handleRetryClick}
               type="button"

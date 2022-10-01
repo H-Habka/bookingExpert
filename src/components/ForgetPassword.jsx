@@ -19,7 +19,7 @@ const ForgetPassword = () => {
   const navigate = useNavigate()
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center py-10">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col justify-center items-center mt-10 ">
             <h2 className="text-2xl font-bold">Forget Your Password?</h2>

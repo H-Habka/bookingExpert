@@ -5,7 +5,7 @@ import LoginWithGoogle from "./LoginWithGoogle";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import AutoComplate1 from "./AutoComplate1";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const {
@@ -22,43 +22,47 @@ const Login = () => {
     <div className="flex flex-col items-center justify-center">
       <form className="" onSubmit={handleSubmit(onSubmit)}>
         <div className="my-10">
-          {emailOrPhone === "email" ? (
-            <CustomInputField
-              register={{
-                ...register("email", { required: true, maxLength: 30 }),
-              }}
-              type="text"
-              label="Email"
-              className="w-[300px] sm:w-[400px]"
-              error={!!errors?.email}
-              isSubmitSuccessful={isSubmitSuccessful}
-            />
-          ) : (
-            <div className="flex w-[300px] sm:w-[400px] gap-4">
-              <AutoComplate1
-                register={register}
-                type="text"
-                label="code"
-                className="w-[70px] sm:w-[94px]"
-                error={!!errors?.code}
-                isSubmitSuccessful={isSubmitSuccessful}
-                watch={watch}
-                reset={reset}
-              />
-              <CustomInputField
-                register={{
-                  ...register("phone", { required: true, maxLength: 30 }),
-                }}
-                type="text"
-                label="phone"
-                className="w-[214px] sm:w-[290px]"
-                error={!!errors?.phone}
-                isSubmitSuccessful={isSubmitSuccessful}
-              />
-            </div>
-          )}
+          <div >
+            {emailOrPhone === "email" ? (
+              <div>
+                <CustomInputField
+                  register={{
+                    ...register("email", { required: true, maxLength: 30 }),
+                  }}
+                  type="text"
+                  label="Email"
+                  className="w-[300px] sm:w-[400px]"
+                  error={!!errors?.email}
+                  isSubmitSuccessful={isSubmitSuccessful}
+                />
+              </div>
+            ) : (
+              <div className="flex w-[300px] sm:w-[400px] gap-4">
+                <AutoComplate1
+                  register={register}
+                  type="text"
+                  label="code"
+                  className="w-[70px] sm:w-[94px]"
+                  error={!!errors?.code}
+                  isSubmitSuccessful={isSubmitSuccessful}
+                  watch={watch}
+                  reset={reset}
+                />
+                <CustomInputField
+                  register={{
+                    ...register("phone", { required: true, maxLength: 30 }),
+                  }}
+                  type="text"
+                  label="phone"
+                  className="w-[214px] sm:w-[290px]"
+                  error={!!errors?.phone}
+                  isSubmitSuccessful={isSubmitSuccessful}
+                />
+              </div>
+            )}
+          </div>
 
-          <div className="flex justify-end m-1">
+          <div data-aos="fade-up" className="flex justify-end m-1">
             <button
               type="button"
               onClick={() =>
@@ -72,7 +76,7 @@ const Login = () => {
             </button>
           </div>
         </div>
-        <div className="mb-10">
+        <div  className="mb-10">
           <CustomInputField
             register={{
               ...register("password", { required: true, maxLength: 30 }),

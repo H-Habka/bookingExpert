@@ -19,7 +19,7 @@ const DragnDropZone = () => {
     <div className="w-[300px] xs:w-[400px] p-10 mx-auto">
       <div
         {...getRootProps({ className: "dropzone" })}
-        className={`w-full bg-gray-200 cursor-pointer border-2 border-gray-700 border-dashed rounded-xl h-40 transition-all duration-300 ${
+        className={`w-full bg-gray-200 dark:bg-darkbg0 cursor-pointer border-2 border-gray-700 border-dashed rounded-xl h-40 transition-all duration-300 ${
           isDragActive && "opacity-90 brightness-75"
         }`}
       >

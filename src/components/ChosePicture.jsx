@@ -28,7 +28,7 @@ const ChosePicture = ({ register, imageFile, reset }) => {
     reset({image : null})
   };
   return (
-    <div className="w-[240px] h-[240px] rounded-full overflow-hidden relative group">
+    <div data-aos="fade-down" className="w-[240px] h-[240px] rounded-full overflow-hidden relative group">
       <label className="cursor-pointer w-fit ">
         {image ? (
           <img

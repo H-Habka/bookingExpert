@@ -40,7 +40,7 @@ const AutoComplate1 = ({
   }, [codeValue]);
 
   return (
-    <div className="w-fit relative group">
+    <div data-aos="flip-up" className="w-fit relative group">
       <input
         {...register("code", {
           required: true,
