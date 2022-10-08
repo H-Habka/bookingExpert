@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Login from "./Login";
 import Signup from "./Signup";
+import { useTranslation } from "react-i18next";
 
 const navData = [
   { idx: 0, title: "login", to: "/auth/login" },
@@ -12,6 +13,7 @@ const navData = [
 ];
 
 const Auth = () => {
+  const {t} = useTranslation()
   const [loginOrSignUp, setLoginOrSignUp] = useState("login");
   const [activeOne, setActiveOne] = useState(-1);
   const [customerOrProvider, setCustomerOrProvider] = useState(null);
@@ -51,7 +53,7 @@ const Auth = () => {
               <div>
                 <LoginAsUser width={100} height={100} />
               </div>
-              <p>As Customer</p>
+              <p>{t("As Customer")}</p>
             </button>
             <button
               data-aos="fade-up-left"
@@ -61,7 +63,7 @@ const Auth = () => {
               <div>
                 <LoginAsProvider width={100} height={100} />
               </div>
-              <p>As Service Provider</p>
+              <p>{t("As Service Provider")}</p>
             </button>
           </div>
         )}

@@ -1,7 +1,9 @@
 import NavItem from "./NavItem";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const NavList = ({ navData, truck, activeOne, setActiveOne }) => {
+  const { i18n } = useTranslation();
   const itemRef = useRef();
   return (
     <div
@@ -23,7 +25,11 @@ const NavList = ({ navData, truck, activeOne, setActiveOne }) => {
         } bottom-0 transition-all duration-300`}
         style={{
           width: `${itemRef?.current?.offsetWidth}px`,
-          left: `${activeOne * itemRef?.current?.offsetWidth}px`,
+          left: `${
+            (i18n.resolvedLanguage === "ar"
+              ? navData.length - activeOne - 1
+              : activeOne) * itemRef?.current?.offsetWidth
+          }px`,
           boxShadow: "0px 0px 3px 0px #0305fa",
         }}
       />

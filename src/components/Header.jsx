@@ -5,11 +5,18 @@ import { ReactComponent as DoubleArrowUp } from "../icons/doubleArrowUp.svg";
 import { ReactComponent as LogoLight } from "../icons/logoLight.svg";
 import CustomButton from "./CustomButton";
 import LightDarkToggle from "./LightDarkToggle";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate, useLocation } from "react-router-dom";
 import ProfileProgress from "./ProfileProgress";
 import { useStore } from "../store";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import { useTranslation } from "react-i18next";
+
+const langs = {
+  ar: { nativeName: "Arabic" },
+  en: { nativeName: "English" },
+};
 
 const navData = [
   { idx: 0, title: "Home", to: "/" },
@@ -27,11 +34,19 @@ const Header = ({ refprop }) => {
   });
   const navigate = useNavigate();
   const isDark = useStore((state) => state.isDark);
+  const user = useStore((state) => state.user);
+  const setUser = useStore((state) => state.setUser);
+  const { i18n, t } = useTranslation();
 
   useEffect(() => {
     let activeItem = navData.filter((item) => item.to === location.pathname)[0];
     setActiveOne(activeItem ? activeItem.idx : -1);
   }, [location]);
+
+  useLayoutEffect(() => {
+    let userPersist = localStorage.getItem("user");
+    if (userPersist) setUser(JSON.parse(userPersist));
+  }, []);
 
   return (
     <div
@@ -61,15 +76,53 @@ const Header = ({ refprop }) => {
               <LightDarkToggle size={36} />
             </div>
           </div>
-          {/* <button className="border-4 hover:border-blue-500 rounded-full border-transparent transition-all duration-300">
+          <div className="group relative cursor-pointer border-4 hover:border-blue-500 rounded-full border-transparent transition-all duration-300">
             <img
               src="/images/translate.webp"
               alt="translate"
               width={36}
               height={36}
             />
-          </button> */}
-          <CustomButton title="Login" onClick={() => navigate("/auth/login")} />
+            <div className="absolute top-[110%] left-1/2 -translate-x-1/2 hidden group-hover:block bg-gray-200 p-1">
+              {Object.keys(langs).map((lang) =>
+                i18n.resolvedLanguage === lang ? null : (
+                  <button
+                    key={lang}
+                    onClick={() => {
+                      i18n.changeLanguage(lang);
+
+                      document
+                        .getElementsByTagName("html")[0]
+                        .setAttribute(
+                          "dir",
+                          i18n.resolvedLanguage === "ar" ? "rtl" : "ltr"
+                        );
+                    }}
+                    className="p-1  disabled:bg-gray-100 disabled: w-full"
+                  >
+                    {langs[lang].nativeName}
+                  </button>
+                )
+              )}
+            </div>
+          </div>
+          {user ? (
+            <div
+              className="cursor-pointer w-[45px] h-[45px] rounded-full"
+              onClick={() => navigate("/profile")}
+            >
+              <LazyLoadImage
+                src={user?.profile_file}
+                alt="profile"
+                className="w-full h-full rounded-full"
+              />
+            </div>
+          ) : (
+            <CustomButton
+              title="Login"
+              onClick={() => navigate("/auth/login")}
+            />
+          )}
         </div>
       </div>
       {!isLg && (

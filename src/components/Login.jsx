@@ -3,11 +3,21 @@ import CustomButton from "./CustomButton";
 import LoginWithFaceBook from "./LoginWithFaceBook";
 import LoginWithGoogle from "./LoginWithGoogle";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AutoComplate1 from "./AutoComplate1";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { validitor } from "../formValidator";
+import api from "../api";
+import { toast } from "react-hot-toast";
+import { useStore } from "../store";
 
 const Login = () => {
+  const [emailOrPhone, setEmailOrPhone] = useState("email");
+  const navigate = useNavigate();
+  const setUser = useStore((state) => state.setUser);
+  const user = useStore((state) => state.user);
+
+  console.log({ user });
   const {
     register,
     handleSubmit,
@@ -15,24 +25,54 @@ const Login = () => {
     reset,
     formState: { errors, isSubmitSuccessful },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
-  const [emailOrPhone, setEmailOrPhone] = useState("email");
-  console.log(errors);
+
+  useEffect(() => {
+    reset({ email: "", phone_number: "", phone_code: "" });
+  }, [emailOrPhone]);
+  const onSubmit = (data) => {
+    data.fcm_token = "GUID";
+    data.register_using = emailOrPhone === "email" ? 0 : 1;
+    data.iso_code = "SY";
+    data.role_id = 2; // 2-user , 3-provider
+    console.log(data);
+    toast.promise(api.providerOrCustomer.login(data), {
+      loading: "Loading...",
+      success: (res) => {
+        console.log({ res });
+        setUser(res?.data?.data);
+        localStorage.setItem("user", JSON.stringify(res?.data?.data));
+        navigate("/");
+        return <p>{res?.data?.message}</p>;
+      },
+      error: (err) => {
+        console.log({ err });
+        return <p>{ err?.response?.data?.message || err?.message}</p>;
+      },
+    });
+  };
+  useEffect(() => {
+    console.log("Component Re Renders");
+  });
   return (
     <div className="flex flex-col items-center justify-center">
-      <form className="" onSubmit={handleSubmit(onSubmit)}>
-        <div className="my-10">
-          <div >
+      <form className="z-[1]" onSubmit={handleSubmit(onSubmit)}>
+        <div className="my-10 z-10">
+          <div>
             {emailOrPhone === "email" ? (
               <div>
                 <CustomInputField
                   register={{
-                    ...register("email", { required: true, maxLength: 30 }),
+                    ...register("email", {
+                      required: validitor.required(),
+                      maxLength: validitor.maxLength(40),
+                      minLength: validitor.minLength(3),
+                      pattern: validitor.isEmail(),
+                    }),
                   }}
                   type="text"
                   label="Email"
                   className="w-[300px] sm:w-[400px]"
-                  error={!!errors?.email}
+                  error={errors?.email}
                   isSubmitSuccessful={isSubmitSuccessful}
                 />
               </div>
@@ -43,49 +83,60 @@ const Login = () => {
                   type="text"
                   label="code"
                   className="w-[70px] sm:w-[94px]"
-                  error={!!errors?.code}
+                  error={!!errors?.phone_code}
                   isSubmitSuccessful={isSubmitSuccessful}
                   watch={watch}
                   reset={reset}
                 />
                 <CustomInputField
                   register={{
-                    ...register("phone", { required: true, maxLength: 30 }),
+                    ...register("phone_number", {
+                      required: validitor.required(),
+                      maxLength: validitor.maxLength(20),
+                      minLength: validitor.minLength(3),
+                      validate: validitor.phoneValidate,
+                    }),
                   }}
                   type="text"
                   label="phone"
                   className="w-[214px] sm:w-[290px]"
-                  error={!!errors?.phone}
+                  error={errors?.phone_number}
                   isSubmitSuccessful={isSubmitSuccessful}
                 />
               </div>
             )}
           </div>
 
-          <div data-aos="fade-up" className="flex justify-end m-1">
-            <button
-              type="button"
-              onClick={() =>
-                setEmailOrPhone((prev) =>
-                  prev === "email" ? "phone" : "email"
-                )
-              }
-              className="relative after:absolute after:w-0 after:h-[1px] after:bg-four  hover:after:w-full after:transition-all after:duration-300 after:bottom-0 after:left-0  text-four"
-            >
-              {emailOrPhone === "email" ? "Use Mobile NO." : "Use Email"}
-            </button>
+          <div className="flex justify-end">
+            <div data-aos="fade-up" className="flex justify-end m-1 w-fit">
+              <button
+                type="button"
+                onClick={() =>
+                  setEmailOrPhone((prev) =>
+                    prev === "email" ? "phone" : "email"
+                  )
+                }
+                className="relative after:absolute after:w-0 after:h-[1px] after:bg-four  hover:after:w-full after:transition-all after:duration-300 after:bottom-0 after:left-0  text-four"
+              >
+                {emailOrPhone === "email" ? "Use Mobile NO." : "Use Email"}
+              </button>
+            </div>
           </div>
         </div>
-        <div  className="mb-10">
+        <div className="mb-10 z-[-1]">
           <CustomInputField
             register={{
-              ...register("password", { required: true, maxLength: 30 }),
+              ...register("password", {
+                required: validitor.required(),
+                maxLength: validitor.maxLength(40),
+                minLength: validitor.minLength(8),
+              }),
             }}
+            error={errors?.password}
+            isSubmitSuccessful={isSubmitSuccessful}
             type="password"
             label="Password"
-            className="w-[300px] sm:w-[400px]"
-            error={!!errors?.password}
-            isSubmitSuccessful={isSubmitSuccessful}
+            className="w-[300px] sm:w-[400px] "
           />
         </div>
         <div className="w-[300px] md:w-[400px] mx-auto">

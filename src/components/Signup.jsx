@@ -4,23 +4,45 @@ import LoginWithFaceBook from "./LoginWithFaceBook";
 import LoginWithGoogle from "./LoginWithGoogle";
 import { useForm } from "react-hook-form";
 import AutoComplate1 from "./AutoComplate1";
+import { validitor } from "../formValidator";
+import api from "../api";
+import { useTranslation } from "react-i18next";
 
 const Signup = () => {
+  const {t} = useTranslation()
+  const [emailOrPhone, setEmailOrPhone] = useState("email");
   const {
     reset,
     register,
     handleSubmit,
     watch,
     formState: { errors, isSubmitSuccessful },
-  } = useForm();
-  const onSubmit = (data) => console.log(data);
-  const [emailOrPhone, setEmailOrPhone] = useState("email");
-
-  console.log({ reset });
+  } = useForm({
+    defaultValues: {
+      first_name: "",
+      last_name: "",
+      phone_number: "",
+      email: "",
+      password: "",
+      phone_code: "",
+    },
+  });
 
   useEffect(() => {
-    reset({ email: "", phone: "", code: "" });
+    reset({ email: "", phone_number: "", phone_code: "" });
   }, [emailOrPhone]);
+
+  const onSubmit = (data) => {
+    data.fcm_token = "GUID";
+    data.register_type = 1;
+    data.register_using = emailOrPhone === "email" ? 0 : 1;
+    data.iso_code = "SY"
+    console.log(data);
+    api.customer
+      .register(data)
+      .then((res) => console.log({ res }))
+      .catch((err) => console.log({ err }));
+  };
   return (
     <div className="flex flex-col items-center justify-center">
       <form className="" onSubmit={handleSubmit(onSubmit)}>
@@ -29,9 +51,14 @@ const Signup = () => {
             <div className="">
               <CustomInputField
                 register={{
-                  ...register("firstName", { required: true, maxLength: 30 }),
+                  ...register("first_name", {
+                    required: validitor.required(),
+                    maxLength: validitor.maxLength(20),
+                    minLength: validitor.minLength(3),
+                    pattern: validitor.isName(),
+                  }),
                 }}
-                error={!!errors?.firstName}
+                error={errors?.first_name}
                 isSubmitSuccessful={isSubmitSuccessful}
                 type="text"
                 label="First Name"
@@ -41,9 +68,14 @@ const Signup = () => {
             <div className="">
               <CustomInputField
                 register={{
-                  ...register("lastName", { required: true, maxLength: 30 }),
+                  ...register("last_name", {
+                    required: validitor.required(),
+                    maxLength: validitor.maxLength(20),
+                    minLength: validitor.minLength(3),
+                    pattern: validitor.isName(),
+                  }),
                 }}
-                error={!!errors?.lastName}
+                error={errors?.last_name}
                 isSubmitSuccessful={isSubmitSuccessful}
                 type="text"
                 label="Last Name"
@@ -52,18 +84,23 @@ const Signup = () => {
             </div>
           </div>
           <div className="flex flex-col md:flex-row gap-4 md:my-10 my-4">
-            <div className="">
+            <div className="z-[10]">
               <div>
                 {emailOrPhone === "email" ? (
                   <div>
                     <CustomInputField
                       register={{
-                        ...register("email", { required: true, maxLength: 30 }),
+                        ...register("email", {
+                          required: validitor.required(),
+                          maxLength: validitor.maxLength(40),
+                          minLength: validitor.minLength(3),
+                          pattern: validitor.isEmail(),
+                        }),
                       }}
                       type="text"
                       label="Email"
                       className="w-[300px]"
-                      error={!!errors?.email}
+                      error={errors?.email}
                       isSubmitSuccessful={isSubmitSuccessful}
                     />
                   </div>
@@ -73,21 +110,26 @@ const Signup = () => {
                       <AutoComplate1
                         register={register}
                         type="text"
-                        label="code"
+                        label="Code"
                         className="w-[70px]"
-                        error={!!errors?.code}
+                        error={errors?.phone_code}
                         isSubmitSuccessful={isSubmitSuccessful}
                         watch={watch}
                         reset={reset}
                       />
                       <CustomInputField
                         register={{
-                          ...register("phone", { required: true, maxLength: 30 }),
+                          ...register("phone_number", {
+                            required: validitor.required(),
+                            maxLength: validitor.maxLength(20),
+                            minLength: validitor.minLength(3),
+                            validate: validitor.phoneValidate,
+                          }),
                         }}
                         type="text"
-                        label="phone"
+                        label="Phone"
                         className="w-[214px]"
-                        error={!!errors?.phone}
+                        error={errors?.phone_number}
                         isSubmitSuccessful={isSubmitSuccessful}
                       />
                     </div>
@@ -95,26 +137,32 @@ const Signup = () => {
                 )}
               </div>
 
-              <div data-aos="fade-up" className="flex justify-end m-1">
-                <button
-                  type="button"
-                  onClick={() =>
-                    setEmailOrPhone((prev) =>
-                      prev === "email" ? "phone" : "email"
-                    )
-                  }
-                  className="relative after:absolute after:w-0 after:h-[1px] after:bg-four  hover:after:w-full after:transition-all after:duration-300 after:bottom-0 after:left-0  text-four"
-                >
-                  {emailOrPhone === "email" ? "Use Mobile NO." : "Use Email"}
-                </button>
+              <div className="flex justify-end">
+                <div data-aos="fade-up" className="flex justify-end m-1 w-fit">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setEmailOrPhone((prev) =>
+                        prev === "email" ? "phone" : "email"
+                      )
+                    }
+                    className="relative after:absolute after:w-0 after:h-[1px] after:bg-four  hover:after:w-full after:transition-all after:duration-300 after:bottom-0 after:left-0  text-four"
+                  >
+                    {emailOrPhone === "email" ? t("Use Mobile NO") : t("Use Email")}
+                  </button>
+                </div>
               </div>
             </div>
-            <div  className="">
+            <div className="">
               <CustomInputField
                 register={{
-                  ...register("password", { required: true, maxLength: 30 }),
+                  ...register("password", {
+                    required: validitor.required(),
+                    maxLength: validitor.maxLength(40),
+                    minLength: validitor.minLength(8),
+                  }),
                 }}
-                error={!!errors?.password}
+                error={errors?.password}
                 isSubmitSuccessful={isSubmitSuccessful}
                 type="password"
                 label="Password"

@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const NavItem = ({ item, setActiveOne, activeOne, refProp }) => {
+  const {t} = useTranslation()
   return (
     <Link
       to={item.to}
@@ -10,7 +12,7 @@ const NavItem = ({ item, setActiveOne, activeOne, refProp }) => {
         activeOne === item.idx ? "text-blue-700" : ""
       } `}
     >
-      {item?.title}
+      {t(item?.title)}
     </Link>
   );
 };

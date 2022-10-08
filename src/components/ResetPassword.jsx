@@ -2,16 +2,21 @@ import React, { useState } from "react";
 import AutoComplate1 from "./AutoComplate1";
 import CustomInputField from "./CustomInputField";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ReactComponent as SuccessLogo } from "../icons/logoBlue.svg";
 import { useMediaQuery } from "react-responsive";
+import { validitor } from "../formValidator";
+import api from "../api";
+import { toast } from "react-hot-toast";
 
-const Retrieve = () => {
+const ResetPassword = () => {
   // const [isEmailOrMessageSent, setIsEmailOrMessageSent] = useState(false)
-  const [formData, setFormData] = useState({});
   const isMd = useMediaQuery({
     query: "(min-width:768px)",
   });
+  const [searchParams] = useSearchParams();
+  const { id } = Object.fromEntries([...searchParams]);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -19,12 +24,24 @@ const Retrieve = () => {
     formState: { errors, isSubmitSuccessful },
   } = useForm();
   const onSubmit = (data) => {
-    setFormData(data);
+    data.user_id = id;
+    
+    toast.promise(api.password.reset(data), {
+      loading: "Loading...",
+      success: (res) => {
+        console.log({ res });
+        navigate(`/auth/login`);
+        return <p>{res?.data?.message}</p>;
+      },
+      error: (err) => {
+        console.log({ err });
+        return <p>{err?.response?.data?.message || err?.message}</p>;
+      },
+    });
     console.log(data);
   };
 
-  const navigate = useNavigate();
-  let password = watch("newPassword", "");
+  let new_password = watch("new_password");
 
   return (
     <div className="flex justify-center items-center">
@@ -45,31 +62,34 @@ const Retrieve = () => {
             <div className="mx-auto">
               <CustomInputField
                 register={{
-                  ...register("newPassword", {
-                    required: true,
-                    maxLength: 30,
+                  ...register("new_password", {
+                    required: validitor.required(),
+                    maxLength: validitor.maxLength(30),
+                    minLength: validitor.minLength(8),
                   }),
                 }}
                 type="password"
                 label="New Password"
                 className="w-[300px] sm:w-[400px]"
-                error={!!errors?.newPassword}
+                error={errors?.new_password}
                 isSubmitSuccessful={isSubmitSuccessful}
               />
             </div>
             <div className="mx-auto">
               <CustomInputField
                 register={{
-                  ...register("confirmPassword", {
-                    required: true,
-                    maxLength: 30,
-                    validate: (value) => value === password,
+                  ...register("confirm_new_password", {
+                    required: validitor.required(),
+                    maxLength: validitor.maxLength(30),
+                    minLength: validitor.minLength(8),
+                    validate: (value) =>
+                      value === new_password ? true : "Password Don't match",
                   }),
                 }}
                 type="password"
                 label="Confirm Password"
                 className="w-[300px] sm:w-[400px]"
-                error={!!errors?.confirmPassword}
+                error={errors?.confirm_new_password}
                 isSubmitSuccessful={isSubmitSuccessful}
               />
             </div>
@@ -77,7 +97,6 @@ const Retrieve = () => {
               <button
                 type="submit"
                 className="sm:text-lg md:text-xl text-white bg-four border-2 border-four rounded-lg w-full py-2 hover:text-four hover:bg-white dark:hover:bg-darkbg1 transition-all duration-300"
-                onClick={() => navigate("/auth/forgetPassword/retrieve")}
               >
                 Reset Password
               </button>
@@ -94,4 +113,4 @@ const Retrieve = () => {
   );
 };
 
-export default Retrieve;
+export default ResetPassword;

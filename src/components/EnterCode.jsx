@@ -2,14 +2,20 @@ import { useState, createRef, useEffect } from "react";
 import AutoComplate1 from "./AutoComplate1";
 import CustomInputField from "./CustomInputField";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import api from "../api";
 
-const length = 6;
+const length = 4;
 
 const EnterCode = () => {
   const [currentActive, setCurrentActive] = useState(0);
   const [refsArray, setRefsArray] = useState([]);
   const [code, setCode] = useState("");
+  const [searchParams] = useSearchParams();
+
+  const { id } = Object.fromEntries([...searchParams]);
+  console.log(id);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -26,6 +32,23 @@ const EnterCode = () => {
     setCurrentActive(0);
     setCode("");
   };
+
+  const handleSubmitClick = () => {
+    if (code.length !== length) return;
+
+    toast.promise(api.otp.verifyResetPassword({ user_id: id, otp: code }), {
+      loading: "Loading...",
+      success: (res) => {
+        console.log({ res });
+        navigate(`/resetPassword?id=${id}`);
+        return <p>{res?.data?.message}</p>;
+      },
+      error: (err) => {
+        console.log({ err });
+        return <p>{err?.response?.data?.message || err?.message}</p>;
+      },
+    });
+  };
   console.log(code);
   return (
     <div className="flex justify-center items-center py-10">
@@ -40,7 +63,7 @@ const EnterCode = () => {
               .map((_, idx) => {
                 return (
                   <div
-                  data-aos="zoom-out"
+                    data-aos="zoom-out"
                     key={idx}
                     className="sm:w-12 sm:h-20 w-10 h-20  border border-black rounded-lg mx-1 xs:mx-2 sm:mx-4"
                   >
@@ -90,9 +113,9 @@ const EnterCode = () => {
         </div>
         <div>
           <button
-            type="submit"
+            type="button"
             className="sm:text-lg md:text-xl text-white bg-four border-2 border-four rounded-lg w-full py-2 hover:text-four hover:bg-white dark:hover:bg-darkbg1 transition-all duration-300"
-            onClick={() => navigate("/auth/forgetPassword/entercode")}
+            onClick={handleSubmitClick}
           >
             Submit
           </button>

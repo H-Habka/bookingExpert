@@ -21,6 +21,8 @@ const LoginWithGoogle = () => {
       onSuccess={responseGoogle}
       onFailure={responseGoogle}
       cookiePolicy="single_host_origin"
+      autoLoad={false}
+      
     />
   );
 };

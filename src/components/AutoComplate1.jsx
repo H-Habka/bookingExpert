@@ -23,7 +23,7 @@ const AutoComplate1 = ({
   watch,
   reset,
 }) => {
-  const codeValue = watch("code", "");
+  const codeValue = watch("phone_code", "");
   const stylesIfFieldEmpty = "top-1/2 -translate-y-1/2 opacity-0 z-[-1]";
   const stylesIfFieldFull = "-top-2 opacity-100 z-[1]";
   const [filterdData, setFilterdData] = useState([]);
@@ -40,9 +40,9 @@ const AutoComplate1 = ({
   }, [codeValue]);
 
   return (
-    <div data-aos="flip-up" className="w-fit relative group">
+    <div data-aos="flip-up" className="w-fit relative group z-10">
       <input
-        {...register("code", {
+        {...register("phone_code", {
           required: true,
           maxLength: 30,
           validate: (value) =>
@@ -81,11 +81,11 @@ const AutoComplate1 = ({
         {label}
       </div>
       {!Data.find((item) => item === codeValue) && (
-        <div className="absolute top-full z-[10] bg-gray-300 w-full text-lg max-h-[200px] overflow-auto scrollbar-thin">
+        <div className="absolute top-full z-[50] bg-gray-300 w-full text-lg max-h-[200px] overflow-auto scrollbar-thin">
           {filterdData.map((item, idx) => (
             <button
               // onClick={() => setValue(item)}
-              onClick={() => reset({ code: item })}
+              onClick={() => reset({ phone_code: item })}
               className="p-1 block w-full"
               key={idx}
               type="button"

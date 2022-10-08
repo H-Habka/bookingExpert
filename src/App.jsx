@@ -7,7 +7,7 @@ import {
   Header,
   LandingPage,
   Profile,
-  Retrieve,
+  ResetPassword,
 } from "./components";
 import { useStore } from "./store";
 import { useEffect, useRef } from "react";
@@ -22,6 +22,7 @@ import "aos/dist/aos.css";
 import { init } from "aos";
 import RatedBusinessList from "./components/RatedBusinessList";
 import SelectMultiImages from "./components/SelectMultiImages";
+import { Toaster } from "react-hot-toast";
 
 // window.matchMedia("(prefers-color-scheme: dark)")
 
@@ -34,12 +35,13 @@ function App() {
     );
   };
   useEffect(() => {
-    init({ duration: 1000,once:true});
+    init({ duration: 1000, once: true });
   }, []);
   const headerRef = useRef();
   const isDark = useStore((state) => state.isDark);
   return (
     <div className={`${isDark ? "dark" : ""}`}>
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="dark:bg-darkbg1 dark:text-darktext">
         <Header refprop={headerRef} />
         {/* style={{minHeight : `calc(100vh - ${headerRef?.current?.offsetHeight}px)`}} */}
@@ -53,6 +55,8 @@ function App() {
               path="/auth/forgetPassword/enterCode"
               element={<EnterCode />}
             />
+            <Route path="/resetPassword"
+              element={<ResetPassword />}/>
             <Route path="/Footer" element={<Footer />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/CompleteProfile" element={<CompleteProfile />} />
@@ -61,15 +65,9 @@ function App() {
             <Route path="/Individual" element={<IndividualAccountPage />} />
 
             <Route path="/" element={<TempComponent title="Home" />} />
-            <Route path="/About" element={<TempComponent title="About" />} />
-            <Route
-              path="/Features"
-              element={<SelectMultiImages />}
-            />
-            <Route
-              path="/Contact"
-              element={<RatedBusinessList/>}
-            />
+            <Route path="/About" element={<TempComponent title="about" />} />
+            <Route path="/Features" element={<SelectMultiImages />} />
+            <Route path="/Contact" element={<RatedBusinessList />} />
           </Routes>
         </div>
         <Footer />

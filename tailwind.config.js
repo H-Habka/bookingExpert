@@ -27,10 +27,10 @@ module.exports = {
       },
     },
 
-      // 473335
-      // 413620
-      // 524632
-      // 432818
+    // 473335
+    // 413620
+    // 524632
+    // 432818
   },
-  plugins: [require("tailwind-scrollbar")],
+  plugins: [require("tailwind-scrollbar"), require("tailwindcss-rtl")],
 };
