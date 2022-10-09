@@ -4,6 +4,8 @@ import { ReactComponent as ClockIcon } from "../icons/clock.svg";
 import { ReactComponent as EditIcon } from "../icons/edit.svg";
 import { ReactComponent as DeleteIcon } from "../icons/delete.svg";
 import { useMediaQuery } from "react-responsive";
+import { useTranslation } from "react-i18next";
+const idImage = require("../images/id.png")
 
 const AddServicesCard = ({
   time = 30,
@@ -12,6 +14,7 @@ const AddServicesCard = ({
   serviceCategory = "Baber",
 }) => {
   const [isCardHoverd, setIsCardHoverd] = useState(false);
+  const { t } = useTranslation();
   const isSm = useMediaQuery({
     query: "(max-width:640px)",
   });
@@ -26,7 +29,7 @@ const AddServicesCard = ({
       }`}
     >
       {isCardHoverd && (
-        <div className="absolute flex gap-2 w-fit right-2 top-0 -translate-y-1/2">
+        <div className="absolute flex gap-2 w-fit end-2 top-0 -translate-y-1/2">
           <div className="group py-2">
             <div
               className="cursor-pointer group-hover:animate-bounce rounded-full p-2 bg-white dark:bg-darkbg0"
@@ -48,7 +51,7 @@ const AddServicesCard = ({
 
       <div className="h-[150px] p-1">
         <LazyLoadImage
-          src="/images/id.png"
+          src={idImage}
           alt="service_Img"
           className="rounded-lg  w-full h-full object-cover"
         />
@@ -56,13 +59,13 @@ const AddServicesCard = ({
       <div className="h-[150px] flex flex-col justify-around p-2">
         <div className=" flex flex-col items-center sm:flex-row gap-2">
           <span className="text-lg font-semibold">
-            Service Name {isSm ? "" : ":"}{" "}
+            {t("Service Name")} {isSm ? "" : ":"}{" "}
           </span>
           <span>{seviceName}</span>
         </div>
         <div className=" flex flex-col items-center sm:flex-row gap-2">
           <span className="text-lg font-semibold">
-            Service Category {isSm ? "" : ":"}{" "}
+            {t("Service Category")} {isSm ? "" : ":"}{" "}
           </span>
           <span>{serviceCategory}</span>
         </div>
@@ -70,14 +73,16 @@ const AddServicesCard = ({
       <div className="h-[150px] flex flex-col justify-around p-2">
         <div className=" flex flex-col items-center sm:flex-row gap-2">
           <span className="text-lg font-semibold">
-            Price {isSm ? "" : ":"}{" "}
+            {t("Price")} {isSm ? "" : ":"}{" "}
           </span>
           <span>{price}$</span>
         </div>
         <div className="flex flex-col items-center sm:flex-row gap-2">
-          <span className="text-lg font-semibold">Time {isSm ? "" : ":"} </span>
+          <span className="text-lg font-semibold">
+            {t("Time")} {isSm ? "" : ":"}{" "}
+          </span>
           <span className="flex">
-            <ClockIcon width={20} height={20} /> {time} Min
+            <ClockIcon width={20} height={20} /> {time} {t("Min")}
           </span>
         </div>
       </div>

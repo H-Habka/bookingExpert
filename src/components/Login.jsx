@@ -10,8 +10,11 @@ import { validitor } from "../formValidator";
 import api from "../api";
 import { toast } from "react-hot-toast";
 import { useStore } from "../store";
+import { useTranslation } from "react-i18next";
+import TextWithUnderLineEffect from "./TextWithUnderLineEffect";
 
 const Login = () => {
+  const { t } = useTranslation();
   const [emailOrPhone, setEmailOrPhone] = useState("email");
   const navigate = useNavigate();
   const setUser = useStore((state) => state.setUser);
@@ -35,8 +38,9 @@ const Login = () => {
     data.iso_code = "SY";
     data.role_id = 2; // 2-user , 3-provider
     console.log(data);
+
     toast.promise(api.providerOrCustomer.login(data), {
-      loading: "Loading...",
+      loading: t("Loading"),
       success: (res) => {
         console.log({ res });
         setUser(res?.data?.data);
@@ -46,7 +50,7 @@ const Login = () => {
       },
       error: (err) => {
         console.log({ err });
-        return <p>{ err?.response?.data?.message || err?.message}</p>;
+        return <p>{err?.response?.data?.message || err?.message}</p>;
       },
     });
   };
@@ -81,7 +85,7 @@ const Login = () => {
                 <AutoComplate1
                   register={register}
                   type="text"
-                  label="code"
+                  label="Code"
                   className="w-[70px] sm:w-[94px]"
                   error={!!errors?.phone_code}
                   isSubmitSuccessful={isSubmitSuccessful}
@@ -98,7 +102,7 @@ const Login = () => {
                     }),
                   }}
                   type="text"
-                  label="phone"
+                  label="Phone"
                   className="w-[214px] sm:w-[290px]"
                   error={errors?.phone_number}
                   isSubmitSuccessful={isSubmitSuccessful}
@@ -108,19 +112,14 @@ const Login = () => {
           </div>
 
           <div className="flex justify-end">
-            <div data-aos="fade-up" className="flex justify-end m-1 w-fit">
-              <button
-                type="button"
-                onClick={() =>
-                  setEmailOrPhone((prev) =>
-                    prev === "email" ? "phone" : "email"
-                  )
-                }
-                className="relative after:absolute after:w-0 after:h-[1px] after:bg-four  hover:after:w-full after:transition-all after:duration-300 after:bottom-0 after:left-0  text-four"
-              >
-                {emailOrPhone === "email" ? "Use Mobile NO." : "Use Email"}
-              </button>
-            </div>
+            <TextWithUnderLineEffect
+              title={emailOrPhone === "email" ? "Use Mobile NO" : "Use Email"}
+              onClick={() =>
+                setEmailOrPhone((prev) =>
+                  prev === "email" ? "phone" : "email"
+                )
+              }
+            />
           </div>
         </div>
         <div className="mb-10 z-[-1]">
@@ -144,20 +143,20 @@ const Login = () => {
             type="submit"
             className="sm:text-lg md:text-xl text-white bg-four border-2 border-four rounded-lg w-full py-2 hover:text-four hover:bg-white dark:hover:bg-darkbg1 transition-all duration-300"
           >
-            Login
+            {t("login")}
           </button>
           <div className="mt-4">
             <div className="relative z-[1] ">
               <div className="absolute w-full h-1 bg-five top-1/2 -translate-y-1/2 z-[-1] rounded-2xl" />
               <div className="bg-white text-3xl w-fit mx-auto px-3 text-five dark:bg-darkbg1">
-                Or
+                {t("Or")}
               </div>
             </div>
             <div className="flex gap-2 justify-center mt-4 h-[65px]">
-              <div>
+              <div className="transition-all duration-100 hover:scale-105">
                 <LoginWithFaceBook />
               </div>
-              <div>
+              <div className="transition-all duration-100 hover:scale-105">
                 <LoginWithGoogle />
               </div>
             </div>
@@ -165,12 +164,7 @@ const Login = () => {
         </div>
       </form>
       <Link to="/auth/forgetPassword" className="flex justify-end m-1 mt-6">
-        <button
-          type="button"
-          className="relative after:absolute after:w-0 after:h-[1px] after:bg-four  hover:after:w-full after:transition-all after:duration-300 after:bottom-0 after:left-0  text-four"
-        >
-          Forget password?
-        </button>
+        <TextWithUnderLineEffect title="Forget password" />
       </Link>
     </div>
   );

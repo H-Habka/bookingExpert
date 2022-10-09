@@ -1,8 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { process_image } from "../utils/imageProcessing";
 import { ReactComponent as DeleteIcon } from "../icons/delete.svg";
+import { useStore } from "../store";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+const profileImage = require("../images/profile.webp");
 
 const ChosePicture = ({ register, imageFile, reset }) => {
+  const lang = useStore((state) => state.lang);
+
   const [image, setImage] = useState(null);
   const [file, setFile] = useState(null);
 
@@ -25,20 +30,23 @@ const ChosePicture = ({ register, imageFile, reset }) => {
   const handleClearImageClick = () => {
     setImage(null);
     setFile(null);
-    reset({image : null})
+    reset({ image: null });
   };
   return (
-    <div data-aos="fade-down" className="w-[240px] h-[240px] rounded-full overflow-hidden relative group">
+    <div
+      data-aos="fade-down"
+      className="w-[240px] h-[240px] rounded-full overflow-hidden relative group"
+    >
       <label className="cursor-pointer w-fit ">
         {image ? (
-          <img
+          <LazyLoadImage
             src={image}
             alt="profile"
             className="w-full h-full rounded-full object-cover"
           />
         ) : (
-          <img
-            src="/images/profile.webp"
+          <LazyLoadImage
+            src={profileImage}
             alt="profile"
             className="w-full h-full rounded-full object-cover"
           />
@@ -48,7 +56,9 @@ const ChosePicture = ({ register, imageFile, reset }) => {
       {image && (
         <button
           onClick={handleClearImageClick}
-          className="absolute  bottom-1 left-1/2 -translate-x-1/2 hidden group-hover:block"
+          className={`absolute  bottom-1 start-1/2 ${
+            lang === "ar" ? "translate-x-1/2" : "-translate-x-1/2"
+          } hidden group-hover:block`}
         >
           <DeleteIcon width={30} height={30} />
         </button>

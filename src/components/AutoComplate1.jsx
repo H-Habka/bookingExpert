@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 let Data = [
   "+963",
   "+943",
@@ -23,6 +24,7 @@ const AutoComplate1 = ({
   watch,
   reset,
 }) => {
+  const { t } = useTranslation();
   const codeValue = watch("phone_code", "");
   const stylesIfFieldEmpty = "top-1/2 -translate-y-1/2 opacity-0 z-[-1]";
   const stylesIfFieldFull = "-top-2 opacity-100 z-[1]";
@@ -65,12 +67,12 @@ const AutoComplate1 = ({
             ? "0px 0px 3px 0px green"
             : "",
         }}
-        placeholder={label}
+        placeholder={t(label)}
       />
       <div
         className={`${
           codeValue ? stylesIfFieldFull : stylesIfFieldEmpty
-        } absolute bg-white dark:bg-darkbg1 px-2  left-2 group-focus-within:-top-2 group-focus-within:-translate-y-0 translate-all duration-300 group-focus-within:opacity-100  text-sm group-focus-within:z-[1]  ${
+        } absolute bg-white dark:bg-darkbg1 px-2  start-2 group-focus-within:-top-2 group-focus-within:-translate-y-0 translate-all duration-300 group-focus-within:opacity-100  text-sm group-focus-within:z-[1]  ${
           error
             ? "text-red-600"
             : isSubmitSuccessful
@@ -78,7 +80,7 @@ const AutoComplate1 = ({
             : "group-focus-within:text-two"
         }`}
       >
-        {label}
+        {t(label)}
       </div>
       {!Data.find((item) => item === codeValue) && (
         <div className="absolute top-full z-[50] bg-gray-300 w-full text-lg max-h-[200px] overflow-auto scrollbar-thin">

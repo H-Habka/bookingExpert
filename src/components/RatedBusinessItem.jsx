@@ -1,12 +1,13 @@
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { ReactComponent as FillStarIcon } from "../icons/starFill.svg";
+const testImage = require("../images/imageTest.jpg");
 
 const RatedBusinessItem = ({ title = "hossien", Rate = "4.5" }) => {
   return (
     <div className="flex flex-col items-center  max-w-[300px] text-center xs:text-start gap-4 px-4 xs:flex-row xs:max-w-[700px]">
       <div className="min-w-[100px]">
         <LazyLoadImage
-          src="/images/imageTest.jpg"
+          src={testImage}
           alt="business"
           className="w-[100px] h-[100px] rounded-full"
         />

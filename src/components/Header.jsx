@@ -12,10 +12,14 @@ import ProfileProgress from "./ProfileProgress";
 import { useStore } from "../store";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useTranslation } from "react-i18next";
+const logoDarkImage = require("../images/logoDark.png");
+const translateImage = require("../images/translate.webp");
 
 const langs = {
   ar: { nativeName: "Arabic" },
   en: { nativeName: "English" },
+  gr: { nativeName: "German" },
+  fr: { nativeName: "France" },
 };
 
 const navData = [
@@ -28,7 +32,6 @@ const navData = [
 const Header = ({ refprop }) => {
   const location = useLocation();
   const [isExpanded, setIsExpanded] = useState(false);
-  const [activeOne, setActiveOne] = useState(-1);
   const isLg = useMediaQuery({
     query: "(min-width: 1024px)",
   });
@@ -37,11 +40,8 @@ const Header = ({ refprop }) => {
   const user = useStore((state) => state.user);
   const setUser = useStore((state) => state.setUser);
   const { i18n, t } = useTranslation();
-
-  useEffect(() => {
-    let activeItem = navData.filter((item) => item.to === location.pathname)[0];
-    setActiveOne(activeItem ? activeItem.idx : -1);
-  }, [location]);
+  const lang = useStore((state) => state.lang);
+  const setLang = useStore((state) => state.setLang);
 
   useLayoutEffect(() => {
     let userPersist = localStorage.getItem("user");
@@ -53,52 +53,60 @@ const Header = ({ refprop }) => {
       ref={refprop}
       className="border-b border-gray-400 sticky top-0 bg-white z-[50]"
     >
-      <div className="h-20 bg- dark:bg-darkbg0 dark:text-darktext px-2 sm:px-10 flex justify-between items-center font-bold">
+      <div className="h-20 dark:bg-darkbg0 dark:text-darktext px-2 sm:px-10 flex justify-between items-center font-bold">
         {isDark ? (
           <div>
-            <img src="/images/logoDark.png" alt="logo" height={90} width={90} />
+            <LazyLoadImage
+              src={logoDarkImage}
+              alt="logo"
+              height={90}
+              width={90}
+            />
           </div>
         ) : (
           <LogoLight className="w-[80px] h-[80px]" />
         )}
         {isLg && (
           <div className="">
-            <NavList
-              navData={navData}
-              activeOne={activeOne}
-              setActiveOne={setActiveOne}
-            />
+            <NavList navData={navData} />
           </div>
         )}
-        <div className="flex sm:gap-4 gap-1 items-center">
+        <div className="flex sm:gap-4 gap-1 items-center z-[1]">
           <div className=" border-4 hover:border-blue-500 border-transparent transition-all duration-300 rounded-full">
             <div className="flex item-center justify-center rounded-full bg-[#99a3fb]">
               <LightDarkToggle size={36} />
             </div>
           </div>
           <div className="group relative cursor-pointer border-4 hover:border-blue-500 rounded-full border-transparent transition-all duration-300">
-            <img
-              src="/images/translate.webp"
+            <LazyLoadImage
+              src={translateImage}
               alt="translate"
               width={36}
               height={36}
             />
-            <div className="absolute top-[110%] left-1/2 -translate-x-1/2 hidden group-hover:block bg-gray-200 p-1">
+            <div
+              className={`absolute cursor-default w-40 group-hover:h-36 opacity-0 bg-red-900 z-[-1] ${
+                lang === "ar" ? "translate-x-1/2" : "-translate-x-1/2"
+              } top-[90%] start-1/2`}
+            />
+            <div
+              className={`absolute top-[110%] start-1/2 z-[50] ${
+                lang === "ar" ? "translate-x-1/2" : "-translate-x-1/2"
+              } h-0 overflow-hidden group-hover:h-[105px] group-hover:p-1 transition-all duration-500  rounded-lg  bg-two text-white`}
+            >
               {Object.keys(langs).map((lang) =>
                 i18n.resolvedLanguage === lang ? null : (
                   <button
                     key={lang}
                     onClick={() => {
                       i18n.changeLanguage(lang);
-
+                      setLang(lang);
                       document
                         .getElementsByTagName("html")[0]
-                        .setAttribute(
-                          "dir",
-                          i18n.resolvedLanguage === "ar" ? "rtl" : "ltr"
-                        );
+                        .setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
+                      console.log(lang);
                     }}
-                    className="p-1  disabled:bg-gray-100 disabled: w-full"
+                    className="p-1  disabled:bg-gray-100 disabled: w-full hover:opacity-90 transition-all duration-100 hover:scale-105"
                   >
                     {langs[lang].nativeName}
                   </button>
@@ -119,7 +127,7 @@ const Header = ({ refprop }) => {
             </div>
           ) : (
             <CustomButton
-              title="Login"
+              title="login"
               onClick={() => navigate("/auth/login")}
             />
           )}
@@ -130,13 +138,9 @@ const Header = ({ refprop }) => {
           <div
             className={`${
               isExpanded ? "h-[52px] py-2" : "h-0"
-            } transition-all duration-500  overflow-hidden  dark:bg-darkbg1 border-t border-gray-500`}
+            } transition-all duration-500  overflow-hidden  dark:bg-darkbg1 border-t border-gray-500 `}
           >
-            <NavList
-              navData={navData}
-              activeOne={activeOne}
-              setActiveOne={setActiveOne}
-            />
+            <NavList navData={navData} />
           </div>
           <button
             onClick={() => setIsExpanded((prev) => !prev)}

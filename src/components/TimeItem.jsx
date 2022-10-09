@@ -1,4 +1,7 @@
+import {useTranslation} from 'react-i18next'
+
 const TimeItem = ({ register, time, amount, error }) => {
+  const {t} = useTranslation()
   const isSelected = time == amount;
   return (
     <label
@@ -17,7 +20,7 @@ const TimeItem = ({ register, time, amount, error }) => {
           : "border-gray-500 "
       }`}
     >
-      <p className="text-center">{amount} Min</p>
+      <p className="text-center">{amount} {t("Min")}</p>
       <input value={amount} type="radio" className="hidden" {...register} />
     </label>
   );

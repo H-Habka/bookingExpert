@@ -15,12 +15,10 @@ const navData = [
 const Auth = () => {
   const {t} = useTranslation()
   const [loginOrSignUp, setLoginOrSignUp] = useState("login");
-  const [activeOne, setActiveOne] = useState(-1);
   const [customerOrProvider, setCustomerOrProvider] = useState(null);
   const location = useLocation();
   useEffect(() => {
     let activeItem = navData.filter((item) => item.to === location.pathname)[0];
-    setActiveOne(activeItem ? activeItem.idx : -1);
     setLoginOrSignUp(activeItem ? activeItem.title : "");
   }, [location]);
   return (
@@ -34,8 +32,6 @@ const Auth = () => {
           <NavList
             navData={navData}
             truck={true}
-            activeOne={activeOne}
-            setActiveOne={setActiveOne}
           />
         </div>
         {customerOrProvider && loginOrSignUp === "login" && <Login />}

@@ -4,10 +4,13 @@ import { ReactComponent as PlusIcon } from "../icons/Plus.svg";
 import { ReactComponent as DeleteIcon } from "../icons/delete.svg";
 import { process_image } from "../utils/imageProcessing";
 import SliderComponent from "./SliderComponent";
+import { useStore } from "../store";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const SelectMultiImages = () => {
   const acceptedNumberOfImages = 10;
   const [selectedImages, setSelectedImages] = useState([]);
+  const lang = useStore((state) => state.lang);
   const acceptedFileType = [
     "image/svg+xml",
     "image/webp",
@@ -57,7 +60,10 @@ const SelectMultiImages = () => {
               .fill()
               .map((_, idx) => (
                 <>
-                  {idx === selectedImages.length ? (
+                  {idx ===
+                  (lang === "ar"
+                    ? acceptedNumberOfImages - 1
+                    : selectedImages.length) ? (
                     <label className="group cursor-pointer flex items-center justify-center text-center border-two border border-dotted min-h-[150px] w-fit px-8 mx-auto rounded-xl hover:border-green-700 transition-all duration-500">
                       <div className="flex flex-col gap-4 items-center">
                         <PlusIcon className="w-[75px] h-[75px]" />
@@ -73,7 +79,7 @@ const SelectMultiImages = () => {
                   ) : (
                     <div className="relative flex justify-center items-center">
                       {selectedImages.length > idx ? (
-                        <img
+                        <LazyLoadImage
                           src={selectedImages[idx]?.base64Image}
                           alt="userImage"
                           className="w-[150px] h-[150px] "
@@ -82,10 +88,10 @@ const SelectMultiImages = () => {
                         <div className="w-[150px] h-[150px] rounded-xl border border-dotted bg-gray-400 border-two"></div>
                       )}
                       {selectedImages.length > idx && (
-                        <div className="absolute top-0 right-0">
+                        <div className="absolute top-0 end-0">
                           <div className="group py-2">
                             <div
-                              className="cursor-pointer group-hover:animate-bounce rounded-full p-2 bg-white dark:bg-darkbg0"
+                              className="w-fit cursor-pointer group-hover:animate-bounce rounded-full p-2 bg-white dark:bg-darkbg0"
                               style={{ boxShadow: "1px 1px 4px 0px black" }}
                               onClick={() =>
                                 handleDeleteClick(selectedImages[idx]?.name)

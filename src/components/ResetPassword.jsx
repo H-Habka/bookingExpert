@@ -8,9 +8,11 @@ import { useMediaQuery } from "react-responsive";
 import { validitor } from "../formValidator";
 import api from "../api";
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 const ResetPassword = () => {
   // const [isEmailOrMessageSent, setIsEmailOrMessageSent] = useState(false)
+  const { t } = useTranslation();
   const isMd = useMediaQuery({
     query: "(min-width:768px)",
   });
@@ -25,9 +27,9 @@ const ResetPassword = () => {
   } = useForm();
   const onSubmit = (data) => {
     data.user_id = id;
-    
+
     toast.promise(api.password.reset(data), {
-      loading: "Loading...",
+      loading: t("Loading"),
       success: (res) => {
         console.log({ res });
         navigate(`/auth/login`);
@@ -47,9 +49,9 @@ const ResetPassword = () => {
     <div className="flex justify-center items-center">
       <form onSubmit={handleSubmit(onSubmit)} className="py-4">
         <div className="flex flex-col justify-center items-center mt-10 ">
-          <h2 className="text-2xl font-bold">Change Password</h2>
+          <h2 className="text-2xl font-bold">{t("Reset Password")}</h2>
           <p className="text-lg font-semibold mt-6 px-2 text-center w-[80%] mx-auto">
-            Enter Your New Password and Confirm It.
+            {t("Enter Your New Password and Confirm It")}.
           </p>
         </div>
         <div className="flex flex-col md:flex-row justify-between gap-8">
@@ -98,7 +100,7 @@ const ResetPassword = () => {
                 type="submit"
                 className="sm:text-lg md:text-xl text-white bg-four border-2 border-four rounded-lg w-full py-2 hover:text-four hover:bg-white dark:hover:bg-darkbg1 transition-all duration-300"
               >
-                Reset Password
+                {t("Reset Password")}
               </button>
             </div>
           </div>

@@ -23,22 +23,36 @@ import { init } from "aos";
 import RatedBusinessList from "./components/RatedBusinessList";
 import SelectMultiImages from "./components/SelectMultiImages";
 import { Toaster } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 // window.matchMedia("(prefers-color-scheme: dark)")
+const TempComponent = ({ title }) => {
+  return (
+    <div className="flex items-center justify-center h-[340px] text-3xl">
+      {title} Page
+    </div>
+  );
+};
 
 function App() {
-  const TempComponent = ({ title }) => {
-    return (
-      <div className="flex items-center justify-center h-[340px] text-3xl">
-        {title} Page
-      </div>
-    );
-  };
-  useEffect(() => {
-    init({ duration: 1000, once: true });
-  }, []);
   const headerRef = useRef();
   const isDark = useStore((state) => state.isDark);
+  const lang = useStore((state) => state.lang);
+  const setLang = useStore((state) => state.setLang);
+
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    init({ duration: 1000, once: true });
+    setLang(localStorage.getItem("i18nextLng"));
+  }, []);
+
+  useEffect(() => {
+    document
+      .getElementsByTagName("html")[0]
+      .setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
+  }, [lang]);
+  console.log({ lang });
   return (
     <div className={`${isDark ? "dark" : ""}`}>
       <Toaster position="top-center" reverseOrder={false} />
@@ -55,8 +69,7 @@ function App() {
               path="/auth/forgetPassword/enterCode"
               element={<EnterCode />}
             />
-            <Route path="/resetPassword"
-              element={<ResetPassword />}/>
+            <Route path="/resetPassword" element={<ResetPassword />} />
             <Route path="/Footer" element={<Footer />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/CompleteProfile" element={<CompleteProfile />} />

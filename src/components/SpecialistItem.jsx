@@ -1,10 +1,11 @@
 import { LazyLoadImage } from "react-lazy-load-image-component";
+const testImage = require("../images/imageTest.jpg");
 
 const SpecialistItem = ({ name = "hossien habka" }) => {
   return (
     <div className="flex flex-col gap-2 items-center">
       <LazyLoadImage
-        src="/images/imageTest.jpg"
+        src={testImage}
         alt="Specialist"
         className="max-w-[150px] w-full h-full max-h-[150px] rounded-full"
       />

@@ -5,10 +5,12 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import api from "../api";
+import { useTranslation } from "react-i18next";
 
 const length = 4;
 
 const EnterCode = () => {
+  const { t } = useTranslation();
   const [currentActive, setCurrentActive] = useState(0);
   const [refsArray, setRefsArray] = useState([]);
   const [code, setCode] = useState("");
@@ -37,7 +39,7 @@ const EnterCode = () => {
     if (code.length !== length) return;
 
     toast.promise(api.otp.verifyResetPassword({ user_id: id, otp: code }), {
-      loading: "Loading...",
+      loading: t("Loading"),
       success: (res) => {
         console.log({ res });
         navigate(`/resetPassword?id=${id}`);
@@ -54,7 +56,7 @@ const EnterCode = () => {
     <div className="flex justify-center items-center py-10">
       <div>
         <div className="flex flex-col justify-center items-center mt-10 ">
-          <h2 className="text-3xl font-bold">Enter The Code</h2>
+          <h2 className="text-3xl font-bold">{t("Enter The Code")}</h2>
         </div>
         <div>
           <div className="flex  p-2 sm:p-4 mt-10 mb-2 w-fit ">
@@ -105,9 +107,9 @@ const EnterCode = () => {
             <button
               onClick={handleRetryClick}
               type="button"
-              className="text-xl  relative after:absolute after:w-0 after:h-[1px] after:bg-four  hover:after:w-full after:transition-all after:duration-300 after:bottom-0 after:left-0  text-four"
+              className="text-xl  relative after:absolute after:w-0 after:h-[1px] after:bg-four  hover:after:w-full after:transition-all after:duration-300 after:bottom-0 after:start-0  text-four"
             >
-              Retry
+              {t("Retry")}
             </button>
           </div>
         </div>
@@ -117,7 +119,7 @@ const EnterCode = () => {
             className="sm:text-lg md:text-xl text-white bg-four border-2 border-four rounded-lg w-full py-2 hover:text-four hover:bg-white dark:hover:bg-darkbg1 transition-all duration-300"
             onClick={handleSubmitClick}
           >
-            Submit
+            {t("submit")}
           </button>
         </div>
       </div>

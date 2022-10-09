@@ -3,6 +3,14 @@ import { ReactComponent as Eye } from "../icons/eye.svg";
 import { ReactComponent as EyeSlash } from "../icons/eyeSlash.svg";
 import { useTranslation } from "react-i18next";
 
+const translateErrorMessage = (message, t) => {
+  const value = message?.split("(")[1]?.split(")")[0];
+  if (!value) return t(message);
+  return t(`${message?.split("(")[0]}_${value < 11 ? "few" : "many"}`, {
+    value,
+  });
+};
+
 const CustomInputField = ({
   type,
   label,
@@ -12,13 +20,12 @@ const CustomInputField = ({
   error,
   isSubmitSuccessful,
 }) => {
-  const {t} = useTranslation()
+  const { t } = useTranslation();
   const stylesIfFieldEmpty = "top-1/2 -translate-y-1/2 opacity-0 z-[-1]";
   const stylesIfFieldFull = "-top-2 opacity-100 z-[1]";
   const [hasValue, setHasValue] = useState(false);
   const [passwordVisibility, setPasswordVisibility] = useState(false);
-  const isPassword = type === "password"
-
+  const isPassword = type === "password";
 
   return (
     <div data-aos="flip-up" className="w-fit relative group ">
@@ -41,7 +48,7 @@ const CustomInputField = ({
             : "",
         }}
         onChange={(e) => {
-          register.onChange(e)
+          register.onChange(e);
           if (e.target.value) {
             setHasValue(true);
           } else {
@@ -53,7 +60,7 @@ const CustomInputField = ({
       <div
         className={`${
           hasValue ? stylesIfFieldFull : stylesIfFieldEmpty
-        } absolute bg-white dark:bg-darkbg1 px-2  left-2 group-focus-within:-top-2 group-focus-within:-translate-y-0 translate-all duration-300 group-focus-within:opacity-100  text-sm group-focus-within:z-[1]  ${
+        } absolute bg-white dark:bg-darkbg1 px-2  start-2 group-focus-within:-top-2 group-focus-within:-translate-y-0 translate-all duration-300 group-focus-within:opacity-100  text-sm group-focus-within:z-[1]  ${
           error
             ? "text-red-600"
             : isSubmitSuccessful
@@ -67,7 +74,7 @@ const CustomInputField = ({
         <button
           type="button"
           onClick={() => setPasswordVisibility((prev) => !prev)}
-          className="absolute right-2 top-1/2 -translate-y-1/2 "
+          className="absolute end-2 top-1/2 -translate-y-1/2 "
         >
           {passwordVisibility ? (
             <EyeSlash width={24} height={24} />
@@ -76,8 +83,12 @@ const CustomInputField = ({
           )}
         </button>
       )}
-      <div className={`absolute bottom-full right-0 text-red-600 bg-gray-300 text-xs  border-red-600 rounded-md overflow-hidden max-w-[200px] ${error ? "h-[24px]  p-1 border" : "h-0 p-0"} transition-all duration-700`}>
-        {error?.message}
+      <div
+        className={`z-[50] absolute bottom-full end-0 text-red-600 bg-gray-300 text-xs  border-red-600 rounded-md overflow-hidden max-w-[200px] ${
+          error ? "h-[24px]  p-1 border" : "h-0 p-0"
+        } transition-all duration-700`}
+      >
+        {translateErrorMessage(error?.message, t)}
       </div>
     </div>
   );

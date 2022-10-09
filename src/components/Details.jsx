@@ -1,5 +1,6 @@
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { ReactComponent as ChatIcon } from "../icons/chat.svg";
+const testImage = require("../images/imageTest.jpg");
 
 const Details = ({
   name = "hossien habka",
@@ -12,7 +13,7 @@ const Details = ({
     <div className="flex gap-4 items-center p-2 border border-gray-500 rounded-xl w-fit">
       <div>
         <LazyLoadImage
-          src="/images/imageTest.jpg"
+          src={testImage}
           alt="Specialist"
           className="max-w-[120px] w-full h-full max-h-[120px] rounded-full"
         />

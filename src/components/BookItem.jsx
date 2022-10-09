@@ -1,6 +1,7 @@
 import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useMediaQuery } from "react-responsive";
+const testImage = require("../images/imageTest.jpg")
 
 const BookItem = ({
   isModal,
@@ -28,7 +29,7 @@ const BookItem = ({
     >
       <div className="flex items-center">
         <LazyLoadImage
-          src="/images/imageTest.jpg"
+          src={testImage}
           alt="profile"
           className=" m-auto sm:w-[100px] sm:h-[100px] rounded-full mx-auto w-[200px] h-[200px]"
         />

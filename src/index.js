@@ -6,9 +6,9 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "./i18n";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <Router>
-    <React.Suspense fallback={<div>Loading...</div>}>
+  <React.Suspense fallback={<div>Loading...</div>}>
+    <Router basename="/bookingExpert">
       <App />
-    </React.Suspense>
-  </Router>
+    </Router>
+  </React.Suspense>
 );

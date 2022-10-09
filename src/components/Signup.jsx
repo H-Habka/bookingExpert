@@ -7,9 +7,10 @@ import AutoComplate1 from "./AutoComplate1";
 import { validitor } from "../formValidator";
 import api from "../api";
 import { useTranslation } from "react-i18next";
+import TextWithUnderLineEffect from "./TextWithUnderLineEffect";
 
 const Signup = () => {
-  const {t} = useTranslation()
+  const { t } = useTranslation();
   const [emailOrPhone, setEmailOrPhone] = useState("email");
   const {
     reset,
@@ -36,7 +37,7 @@ const Signup = () => {
     data.fcm_token = "GUID";
     data.register_type = 1;
     data.register_using = emailOrPhone === "email" ? 0 : 1;
-    data.iso_code = "SY"
+    data.iso_code = "SY";
     console.log(data);
     api.customer
       .register(data)
@@ -138,19 +139,16 @@ const Signup = () => {
               </div>
 
               <div className="flex justify-end">
-                <div data-aos="fade-up" className="flex justify-end m-1 w-fit">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setEmailOrPhone((prev) =>
-                        prev === "email" ? "phone" : "email"
-                      )
-                    }
-                    className="relative after:absolute after:w-0 after:h-[1px] after:bg-four  hover:after:w-full after:transition-all after:duration-300 after:bottom-0 after:left-0  text-four"
-                  >
-                    {emailOrPhone === "email" ? t("Use Mobile NO") : t("Use Email")}
-                  </button>
-                </div>
+                <TextWithUnderLineEffect
+                  title={
+                    emailOrPhone === "email" ? "Use Mobile NO" : "Use Email"
+                  }
+                  onClick={() =>
+                    setEmailOrPhone((prev) =>
+                      prev === "email" ? "phone" : "email"
+                    )
+                  }
+                />
               </div>
             </div>
             <div className="">
@@ -176,20 +174,20 @@ const Signup = () => {
             type="submit"
             className="sm:text-lg md:text-xl text-white bg-four border-2 border-four rounded-lg w-full py-2 hover:text-four hover:bg-white dark:hover:bg-darkbg1 transition-all duration-300"
           >
-            SignUp
+            {t("signup")}
           </button>
           <div className="mt-4">
             <div className="relative z-[1] ">
               <div className="absolute w-full h-1 bg-five top-1/2 -translate-y-1/2 z-[-1] rounded-2xl" />
               <div className="bg-white text-3xl w-fit mx-auto px-3 text-five dark:bg-darkbg1">
-                Or
+                {t("Or")}
               </div>
             </div>
             <div className="flex gap-2 justify-center mt-4 h-[65px]">
-              <div>
+              <div className="transition-all duration-100 hover:scale-105">
                 <LoginWithFaceBook />
               </div>
-              <div>
+              <div className="transition-all duration-100 hover:scale-105">
                 <LoginWithGoogle />
               </div>
             </div>

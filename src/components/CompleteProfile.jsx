@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import AddServicesCard from "./AddServicesCard";
 import CustomInputField from "./CustomInputField";
 import TimeItem from "./TimeItem";
+import { useTranslation } from "react-i18next";
 const CompleteProfile = () => {
   const {
     register,
@@ -15,8 +16,7 @@ const CompleteProfile = () => {
   let price = watch("price", "0");
   let serviceCategory = watch("serviceCategory");
   let serviceName = watch("serviceName");
-
-  let watchFields = watch(["time", "price", "serviceName", "serviceCategory"]);
+  const { t } = useTranslation();
 
   const onSubmit = (data) => {
     console.log(data);
@@ -28,9 +28,9 @@ const CompleteProfile = () => {
         className="px-2 sm:px-6 md:px-10 bg-white dark:bg-darkbg1 border-2 border-two rounded-xl w-fit mx-auto  py-6 hover:shadow-custom shadow-two transition-all duration-500"
       >
         <h2 className="text-center text-2xl font-bold">
-          Complete Your Profile
+          {t("Complete Profile")}
         </h2>
-        <h2 className="text-center text-xl font-bold">Get Paid</h2>
+        <h2 className="text-center text-xl font-bold">{t("Get Paid")}</h2>
         <div>
           <div className="flex flex-col gap-[20px] mt-[20px] items-center">
             <div>
@@ -44,7 +44,7 @@ const CompleteProfile = () => {
                 error={!!errors?.AccountHolderName}
                 isSubmitSuccessful={isSubmitSuccessful}
                 type="text"
-                label="Account Holder Name"
+                label="Account Name"
                 className="w-[300px] md:w-[640px]"
               />
             </div>
@@ -78,7 +78,7 @@ const CompleteProfile = () => {
           </div>
           <div>
             <h2 className="text-center text-xl font-bold my-[40px]">
-              Add Your Services
+              {t("Add Your Services")}
             </h2>
             <div className="flex flex-col gap-[20px] items-center">
               <AddServicesCard />
@@ -98,7 +98,7 @@ const CompleteProfile = () => {
                 error={!!errors?.serviceCategory}
                 isSubmitSuccessful={isSubmitSuccessful}
                 type="text"
-                label="Select Service Category"
+                label="Service Category"
                 className="w-[300px] md:w-[640px]"
               />
             </div>
@@ -113,7 +113,7 @@ const CompleteProfile = () => {
                 error={!!errors?.serviceName}
                 isSubmitSuccessful={isSubmitSuccessful}
                 type="text"
-                label="Enter Service Name"
+                label="Service Name"
                 className="w-[300px] md:w-[640px]"
               />
             </div>
@@ -133,7 +133,7 @@ const CompleteProfile = () => {
               />
             </div>
             <div>
-              <p className="text-center my-[10px]">Time</p>
+              <p className="text-center my-[10px]">{t("Time")}</p>
               <div data-aos="flip-up" className="flex justify-between gap-1">
                 <TimeItem
                   error={errors.time}
@@ -164,7 +164,7 @@ const CompleteProfile = () => {
                 <div className="relative z-[1] my-[10px]">
                   <div className="absolute w-full h-1 bg-five top-1/2 -translate-y-1/2 z-[-1] rounded-2xl" />
                   <div className="bg-white text-xl w-fit mx-auto px-1 text-five dark:bg-darkbg1">
-                    Or
+                    {t("Or")}
                   </div>
                 </div>
               </div>

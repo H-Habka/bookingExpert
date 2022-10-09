@@ -5,6 +5,7 @@ import ChosePicture from "./ChosePicture";
 import { useForm } from "react-hook-form";
 import CustomInputField from "./CustomInputField";
 import DragnDropZone from "./DragnDropZone";
+import { useTranslation } from "react-i18next";
 
 const Profile = () => {
   const {
@@ -14,7 +15,7 @@ const Profile = () => {
     watch,
     formState: { errors, isSubmitSuccessful },
   } = useForm();
-
+  const { t } = useTranslation();
   const watchAccountType = watch("AccountType", false);
   let imageFile = watch("image", null);
   let homeServices = watch("homeServices", false);
@@ -28,7 +29,9 @@ const Profile = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="px-2 sm:px-6 md:px-10 bg-white dark:bg-darkbg1 border-2 border-two rounded-xl w-fit mx-auto  py-6 hover:shadow-custom shadow-two transition-all duration-500"
       >
-        <h2 className="text-center text-xl font-bold">Complete Profile</h2>
+        <h2 className="text-center text-xl font-bold">
+          {t("Complete Profile")}
+        </h2>
         <div className="flex flex-col justify-center items-center md:gap-[20px] gap-[20px]">
           <ChosePicture
             reset={reset}
@@ -106,7 +109,7 @@ const Profile = () => {
               <AutoComplate1
                 register={register}
                 type="text"
-                label="code"
+                label="Code"
                 className="w-[70px] md:w-[150px]"
                 error={!!errors?.code}
                 isSubmitSuccessful={isSubmitSuccessful}
@@ -118,7 +121,7 @@ const Profile = () => {
                   ...register("phone", { required: true, maxLength: 30 }),
                 }}
                 type="text"
-                label="phone"
+                label="Phone"
                 className="w-[214px] md:w-[450px]"
                 error={!!errors?.phone}
                 isSubmitSuccessful={isSubmitSuccessful}
@@ -139,7 +142,7 @@ const Profile = () => {
           </div>
           <div data-aos="flip-up">
             <p className="text-lg font-semibold text-center my-4">
-              Choose Your Account Type
+              {t("Choose Your Account Type")}
             </p>
             <div className="grid grid-cols-3 gap-1 md:gap-6 items-center">
               <label
@@ -159,7 +162,7 @@ const Profile = () => {
                     : "border-gray-500 "
                 } `}
               >
-                <p>Individual</p>
+                <p>{t("Individual")}</p>
                 <input
                   value="Individual"
                   type="radio"
@@ -170,7 +173,7 @@ const Profile = () => {
               <div className="relative z-[1] ">
                 <div className="absolute w-full h-1 bg-five top-1/2 -translate-y-1/2 z-[-1] rounded-2xl" />
                 <div className="bg-white text-xl w-fit mx-auto px-1 text-five dark:bg-darkbg1">
-                  Or
+                  {t("Or")}
                 </div>
               </div>
               <label
@@ -190,7 +193,7 @@ const Profile = () => {
                     : "border-gray-500 "
                 }`}
               >
-                <p>Business</p>
+                <p>{t("Business")}</p>
                 <input
                   value="Business"
                   type="radio"
@@ -207,7 +210,7 @@ const Profile = () => {
             </div>
           </div>
           <div data-aos="flip-up" className="w-fit mx-auto xs:w-full ">
-            <p className="px-2 mb-2 ">Bio</p>
+            <p className="px-2 mb-2 ">{t("Bio")}</p>
             <textarea
               rows={5}
               className=" outline-none resize-none border border-black rounded-xl text-xl p-4 dark:bg-darkbg1 dark:border-darktext min-w-[300px] w-[300px] xs:w-full"
@@ -216,7 +219,7 @@ const Profile = () => {
           <div data-aos="flip-up" className="w-full">
             <label className="flex justify-between items-center cursor-pointer">
               <p className="flex-[4/6] text-xl font-semibold ">
-                Do you want to do home service ?
+                {t("Do you want to do home service ?")}
               </p>
               <div
                 className={`w-10 flex-[2/6] ${
@@ -247,24 +250,30 @@ const Profile = () => {
               </div>
             </label>
           </div>
-          <div className={`grid grid-cols-1 md:grid-cols-2 transition-all duration-500 overflow-hidden  ${homeServices ? "md:h-96 h-[750px]" : "h-0"} `}>
+          <div
+            className={`grid grid-cols-1 md:grid-cols-2 transition-all duration-500 overflow-hidden  ${
+              homeServices ? "md:h-96 h-[750px]" : "h-0"
+            } `}
+          >
             <div className="flex flex-col items-center">
               <DragnDropZone />
               <div className="flex flex-col items-center">
-                <p className="text-xl font-semibold">Verify YourSelf</p>
+                <p className="text-xl font-semibold">{t("Verify YourSelf")}</p>
                 <p className="w-[70%] text-center">
-                  Please upload a copy of your ID or driver’s certificate or
-                  residence card
+                  {t(
+                    "Please upload a copy of your ID or driver’s certificate or residence card"
+                  )}
                 </p>
               </div>
             </div>
             <div className="flex flex-col items-center">
               <DragnDropZone />
               <div className="flex flex-col items-center">
-                <p className="text-xl font-semibold">Verify YourSelf</p>
+                <p className="text-xl font-semibold">{t("Verify YourSelf")}</p>
                 <p className="w-[70%] text-center">
-                  Please upload a copy of your ID or driver’s certificate or
-                  residence card
+                  {t(
+                    "Please upload a copy of your ID or driver’s certificate or residence card"
+                  )}
                 </p>
               </div>
             </div>
@@ -273,7 +282,7 @@ const Profile = () => {
             type="submit"
             className="sm:text-lg w-[300px] md:text-xl text-white bg-four border-2 border-four rounded-lg py-2 hover:text-four hover:bg-white dark:hover:bg-darkbg1 transition-all duration-300"
           >
-            Submit
+            {t("submit")}
           </button>
         </div>
       </form>
