@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkproject=self.webpackChunkproject||[]).push([[837],{5837:function(e,c,n){n.r(c);n(2791);var u=n(184);c.default=function(){return(0,u.jsx)("div",{children:"BusinessAccountPage"})}}}]);
+//# sourceMappingURL=837.c4a24519.chunk.js.map

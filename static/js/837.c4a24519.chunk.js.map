@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/837.c4a24519.chunk.js","mappings":"mIAQA,UAN4B,WAC1B,OACE,gDAEH,C","sources":["components/BusinessAccountPage.jsx"],"sourcesContent":["import React from 'react'\r\n\r\nconst BusinessAccountPage = () => {\r\n  return (\r\n    <div>BusinessAccountPage</div>\r\n  )\r\n}\r\n\r\nexport default BusinessAccountPage"],"names":[],"sourceRoot":""}
