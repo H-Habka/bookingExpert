@@ -25,6 +25,9 @@ module.exports = {
       boxShadow: {
         custom: "0px 0px 6px 0px #2289FF",
       },
+      transitionProperty : {
+        custom : "background , color"
+      }
     },
 
     // 473335

@@ -71,17 +71,16 @@ const CustomInputField = ({
         {t(label)}
       </div>
       {isPassword && (
-        <button
-          type="button"
+        <div
           onClick={() => setPasswordVisibility((prev) => !prev)}
-          className="absolute end-2 top-1/2 -translate-y-1/2 "
+          className="cursor-pointer w-fit absolute end-2 top-1/2 -translate-y-1/2 "
         >
           {passwordVisibility ? (
             <EyeSlash width={24} height={24} />
           ) : (
             <Eye width={24} height={24} />
           )}
-        </button>
+        </div>
       )}
       <div
         className={`z-[50] absolute bottom-full end-0 text-red-600 bg-gray-300 text-xs  border-red-600 rounded-md overflow-hidden max-w-[200px] ${

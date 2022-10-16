@@ -11,6 +11,7 @@ i18next
     fallbackLng: "en",
     debug: true,
     backend: {
-      loadPath: (lngs, nameSpaces) => `/bookingExpert/locales/${lngs}/${nameSpaces}.json`,
+      loadPath: (lngs, nameSpaces) =>
+        `/bookingExpert/locales/${lngs}/${nameSpaces}.json`,
     },
   });

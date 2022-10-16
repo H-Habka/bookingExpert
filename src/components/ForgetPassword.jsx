@@ -2,17 +2,22 @@ import React, { useState, useEffect } from "react";
 import AutoComplate1 from "./AutoComplate1";
 import CustomInputField from "./CustomInputField";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { validitor } from "../formValidator";
 import api from "../api";
 import { toast } from "react-hot-toast";
 
 import { useTranslation } from "react-i18next";
 import TextWithUnderLineEffect from "./TextWithUnderLineEffect";
+import CustomButton2 from "./CustomButton2";
 const ForgetPassword = () => {
   const { t } = useTranslation();
-  // const [isEmailOrMessageSent, setIsEmailOrMessageSent] = useState(false)
   const [emailOrPhone, setEmailOrPhone] = useState("email");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const { role_id } = Object.fromEntries([...searchParams]);
 
   const {
     register,
@@ -28,15 +33,22 @@ const ForgetPassword = () => {
 
   const onSubmit = (data) => {
     data.register_using = emailOrPhone === "email" ? 0 : 1;
-    data.role_id = 2;
+    data.role_id = role_id;
+    setLoading(true);
     toast.promise(api.password.forget(data), {
       loading: t("Loading"),
       success: (res) => {
+        setLoading(false);
         console.log({ res });
-        navigate(`/auth/forgetPassword/entercode?id=${res?.data?.data?.id}`);
+        setTimeout(
+          () =>
+            navigate(`/auth/entercode?id=${res?.data?.data?.id}&type=password`),
+          1500
+        );
         return <p>{res?.data?.message}</p>;
       },
       error: (err) => {
+        setLoading(false);
         console.log({ err });
         return <p>{err?.response?.data?.message || err?.message}</p>;
       },
@@ -44,7 +56,6 @@ const ForgetPassword = () => {
     console.log(data);
   };
 
-  const navigate = useNavigate();
   const SubTitle = ({ title }) => {
     return (
       <p data-aos="zoom-out" className="text-lg font-semibold mt-6">
@@ -118,12 +129,7 @@ const ForgetPassword = () => {
           />
         </div>
         <div>
-          <button
-            type="submit"
-            className="sm:text-lg md:text-xl text-white bg-four border-2 border-four rounded-lg w-full py-2 hover:text-four hover:bg-white dark:hover:bg-darkbg1 transition-all duration-300"
-          >
-            {t("submit")}
-          </button>
+          <CustomButton2 title="submit" disabled={loading} />
         </div>
       </form>
     </div>

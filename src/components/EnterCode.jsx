@@ -1,11 +1,11 @@
-import { useState, createRef, useEffect } from "react";
-import AutoComplate1 from "./AutoComplate1";
-import CustomInputField from "./CustomInputField";
-import { useForm } from "react-hook-form";
+import { useState, createRef, useEffect, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import api from "../api";
 import { useTranslation } from "react-i18next";
+import TextWithUnderLineEffect from "./TextWithUnderLineEffect";
+import CustomButton2 from "./CustomButton2";
+import { useStore } from "../store";
 
 const length = 4;
 
@@ -14,12 +14,13 @@ const EnterCode = () => {
   const [currentActive, setCurrentActive] = useState(0);
   const [refsArray, setRefsArray] = useState([]);
   const [code, setCode] = useState("");
+  const [loading, setLoading] = useState(false);
   const [searchParams] = useSearchParams();
+  const setUser = useStore((state) => state.setUser);
 
-  const { id } = Object.fromEntries([...searchParams]);
-  console.log(id);
-
+  const { id, type } = Object.fromEntries([...searchParams]);
   const navigate = useNavigate();
+
   useEffect(() => {
     const refs = Array(length || 0)
       .fill()
@@ -27,39 +28,73 @@ const EnterCode = () => {
     setRefsArray(refs);
   }, []);
 
-  const handleRetryClick = () => {
+  const handleRetryClick = useCallback(() => {
     setTimeout(() => {
       refsArray[0]?.current?.focus();
     }, 10);
     setCurrentActive(0);
     setCode("");
-  };
+  }, [refsArray]);
 
-  const handleSubmitClick = () => {
-    if (code.length !== length) return;
-
-    toast.promise(api.otp.verifyResetPassword({ user_id: id, otp: code }), {
+  const resendOtpHandler = () => {
+    setLoading(true);
+    toast.promise(api.otp.resend({ user_id: id }), {
       loading: t("Loading"),
       success: (res) => {
+        setLoading(false);
         console.log({ res });
-        navigate(`/resetPassword?id=${id}`);
         return <p>{res?.data?.message}</p>;
       },
       error: (err) => {
+        setLoading(false);
         console.log({ err });
         return <p>{err?.response?.data?.message || err?.message}</p>;
       },
     });
   };
+
+  const handleSubmitClick = () => {
+    if (code.length !== length || !type) return;
+    setLoading(true);
+    toast.promise(
+      type === "password"
+        ? api.otp.verifyResetPassword({ user_id: id, otp: code })
+        : api.otp.verify({ user_id: id, otp: code }),
+      {
+        loading: t("Loading"),
+        success: (res) => {
+          setLoading(false);
+          console.log({ res });
+          if (type === "password") {
+            setTimeout(() => navigate(`/resetPassword?id=${id}`), 1500);
+          } else {
+            setUser(res?.data?.data);
+            localStorage.setItem("user", JSON.stringify(res?.data?.data));
+            setTimeout(() => navigate(`/`), 1500);
+          }
+
+          return <p>{res?.data?.message}</p>;
+        },
+        error: (err) => {
+          setLoading(false);
+          console.log({ err });
+          return <p>{err?.response?.data?.message || err?.message}</p>;
+        },
+      }
+    );
+  };
   console.log(code);
   return (
-    <div className="flex justify-center items-center py-10">
+    <div className="flex flex-col justify-center items-center py-10">
       <div>
         <div className="flex flex-col justify-center items-center mt-10 ">
           <h2 className="text-3xl font-bold">{t("Enter The Code")}</h2>
         </div>
         <div>
-          <div className="flex  p-2 sm:p-4 mt-10 mb-2 w-fit ">
+          <div
+            style={{ direction: "ltr" }}
+            className="flex  p-2 sm:p-4 mt-10 mb-2 w-fit "
+          >
             {Array(length || 0)
               .fill()
               .map((_, idx) => {
@@ -103,25 +138,31 @@ const EnterCode = () => {
                 );
               })}
           </div>
-          <div data-aos="fade-up" className="my-5 flex justify-center">
-            <button
+          <div className="flex items-center justify-center my-2">
+            <TextWithUnderLineEffect
+              className="text-xl"
+              title="Retry"
               onClick={handleRetryClick}
-              type="button"
-              className="text-xl  relative after:absolute after:w-0 after:h-[1px] after:bg-four  hover:after:w-full after:transition-all after:duration-300 after:bottom-0 after:start-0  text-four"
-            >
-              {t("Retry")}
-            </button>
+            />
           </div>
         </div>
         <div>
-          <button
-            type="button"
-            className="sm:text-lg md:text-xl text-white bg-four border-2 border-four rounded-lg w-full py-2 hover:text-four hover:bg-white dark:hover:bg-darkbg1 transition-all duration-300"
+          <CustomButton2
+            title="submit"
             onClick={handleSubmitClick}
-          >
-            {t("submit")}
-          </button>
+            type="button"
+            disabled={loading}
+          />
         </div>
+      </div>
+      <div className="mt-2 flex gap-2 items-center text-lg">
+        <p>{t("Didn't Receive Code")}</p>
+
+        <TextWithUnderLineEffect
+          disabled={loading ? true : false}
+          title="Resend it"
+          onClick={resendOtpHandler}
+        />
       </div>
     </div>
   );

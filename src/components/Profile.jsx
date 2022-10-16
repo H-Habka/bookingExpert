@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import CustomInputField from "./CustomInputField";
 import DragnDropZone from "./DragnDropZone";
 import { useTranslation } from "react-i18next";
+import WebCam from "./WebCam";
 
 const Profile = () => {
   const {
@@ -217,8 +218,8 @@ const Profile = () => {
             ></textarea>
           </div>
           <div data-aos="flip-up" className="w-full">
-            <label className="flex justify-between items-center cursor-pointer">
-              <p className="flex-[4/6] text-xl font-semibold ">
+            <label className="flex justify-between items-center cursor-pointer ">
+              <p className="flex-[4/6] md:text-xl font-semibold ">
                 {t("Do you want to do home service ?")}
               </p>
               <div
@@ -251,13 +252,13 @@ const Profile = () => {
             </label>
           </div>
           <div
-            className={`grid grid-cols-1 md:grid-cols-2 transition-all duration-500 overflow-hidden  ${
-              homeServices ? "md:h-96 h-[750px]" : "h-0"
+            className={`grid grid-cols-1 gap-8 transition-all duration-500 overflow-hidden  ${
+              homeServices ? "md:h-[790px] h-[790px]" : "h-0"
             } `}
           >
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center mt-4">
               <DragnDropZone />
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center mt-4">
                 <p className="text-xl font-semibold">{t("Verify YourSelf")}</p>
                 <p className="w-[70%] text-center">
                   {t(
@@ -266,16 +267,9 @@ const Profile = () => {
                 </p>
               </div>
             </div>
-            <div className="flex flex-col items-center">
-              <DragnDropZone />
-              <div className="flex flex-col items-center">
-                <p className="text-xl font-semibold">{t("Verify YourSelf")}</p>
-                <p className="w-[70%] text-center">
-                  {t(
-                    "Please upload a copy of your ID or driver’s certificate or residence card"
-                  )}
-                </p>
-              </div>
+
+            <div>
+              <WebCam />
             </div>
           </div>
           <button

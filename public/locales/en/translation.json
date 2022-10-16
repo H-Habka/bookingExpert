@@ -54,7 +54,6 @@
   "Time": "Time",
   "Min": "Min",
   "Enter Your Custom Time": "Enter Your Custom Time",
-
   "Name Can Only Contain Letters": "Name Can Only Contain Letters",
   "Invalid Email Address": "Invalid Email Address",
   "Invalid Phone Number": "Invalid Phone Number",
@@ -63,12 +62,22 @@
   "Less Than Validation_many": "Can't Be Less Than {{value}} Characters",
   "More Than Validation_few": "Can't Be More Than {{value}} Characters",
   "More Than Validation_many": "Can't Be More Than {{value}} Characters",
-  "Loading": "Loading...",
+  "Loading": "Loading",
   "Enter The Code": "Enter The Code",
   "Retry": "Retry",
   "Enter Your New Password and Confirm It": "Enter Your New Password and Confirm It",
   "New Password": "New Password",
   "Confirm Password": "Confirm Password",
   "Reset Password": "Reset Password",
-  "Password Don't match": "Password Don't match"
+  "Password Don't match": "Password Don't match",
+  "Click To Open Camera": "Click To Open Camera",
+  "Close Camera": "Close Camera",
+  "Start Recording": "Start Recording",
+  "Self face record for 10 seconds say full name that has been provided on ID, and say i’m ready to work for JUST SAY WHAT": "Self face record for 10 seconds say full name that has been provided on ID, and say i’m ready to work for JUST SAY WHAT",
+  "File Uploaded Successfully" : "File Uploaded Successfully",
+  "Only One File is Accepted" : "Only One File is Accepted",
+  "Drag & Upload Your Id": "Drag & Upload Your Id",
+  "Click To Upload File" : "Click To Upload File",
+  "Didn't Receive Code" : "Didn't Receive Code ?",
+  "Resend it" : "Resend it"
 }

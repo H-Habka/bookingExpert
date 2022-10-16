@@ -9,14 +9,13 @@ const LoginWithGoogle = () => {
       <GoogleLogin
         clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}
         render={(renderProps) => (
-          <button
-            type="button"
+          <div
             className="flex justify-center items-center h-full w-[55px] bg-[#191919] dark:bg-white rounded-lg cursor-pointer outline-none"
             onClick={renderProps.onClick}
             disabled={renderProps.disabled}
           >
             <GoogleIcon />
-          </button>
+          </div>
         )}
         onSuccess={responseGoogle}
         onFailure={responseGoogle}

@@ -1,34 +1,41 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Routes, Route } from "react-router-dom";
-import {
-  Auth,
-  ForgetPassword,
-  Header,
-  LandingPage,
-  Profile,
-  ResetPassword,
-} from "./components";
-import { useStore } from "./store";
-import { useEffect, useRef } from "react";
-import EnterCode from "./components/EnterCode";
-import Footer from "./components/Footer";
-import DragnDropZone from "./components/DragnDropZone";
-import WebCam from "./components/WebCam";
-import CompleteProfile from "./components/CompleteProfile";
-import BusinessAccountPage from "./components/BusinessAccountPage";
-import IndividualAccountPage from "./components/IndividualAccountPage";
 import "aos/dist/aos.css";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import { useStore } from "./store";
+import { useEffect, useRef, lazy } from "react";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
 import { init } from "aos";
-import RatedBusinessList from "./components/RatedBusinessList";
-import SelectMultiImages from "./components/SelectMultiImages";
 import { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import Spinner from "./components/Spinner";
+import NotFoundpage from "./components/NotFoundpage";
+
+const Auth = lazy(() => import("./components/Auth"));
+const ForgetPassword = lazy(() => import("./components/ForgetPassword"));
+const Profile = lazy(() => import("./components/Profile"));
+const ResetPassword = lazy(() => import("./components/ResetPassword"));
+const EnterCode = lazy(() => import("./components/EnterCode"));
+const WebCam = lazy(() => import("./components/WebCam"));
+const CompleteProfile = lazy(() => import("./components/CompleteProfile"));
+const BusinessAccountPage = lazy(() =>
+  import("./components/BusinessAccountPage")
+);
+const IndividualAccountPage = lazy(() =>
+  import("./components/IndividualAccountPage")
+);
+const RatedBusinessList = lazy(() => import("./components/RatedBusinessList"));
+const SelectMultiImages = lazy(() => import("./components/SelectMultiImages"));
 
 // window.matchMedia("(prefers-color-scheme: dark)")
 const TempComponent = ({ title }) => {
+  const navigate = useNavigate();
   return (
-    <div className="flex items-center justify-center h-[340px] text-3xl">
+    <div
+      onClick={() => navigate("/profile")}
+      className="flex items-center justify-center h-[340px] text-3xl"
+    >
       {title} Page
     </div>
   );
@@ -39,6 +46,7 @@ function App() {
   const isDark = useStore((state) => state.isDark);
   const lang = useStore((state) => state.lang);
   const setLang = useStore((state) => state.setLang);
+  const user = useStore((state) => state.user);
 
   const { i18n } = useTranslation();
 
@@ -62,14 +70,19 @@ function App() {
         <div className="">
           <Routes>
             {/* <Route path="/" element={<div />} /> */}
-            <Route path="/auth/login" element={<Auth />} />
-            <Route path="/auth/signup" element={<Auth />} />
-            <Route path="/auth/forgetPassword" element={<ForgetPassword />} />
-            <Route
-              path="/auth/forgetPassword/enterCode"
-              element={<EnterCode />}
-            />
-            <Route path="/resetPassword" element={<ResetPassword />} />
+
+            {!user && (
+              <>
+                <Route path="/auth/login" element={<Auth />} />
+                <Route path="/auth/signup" element={<Auth />} />
+                <Route
+                  path="/auth/forgetPassword"
+                  element={<ForgetPassword />}
+                />
+                <Route path="/auth/enterCode" element={<EnterCode />} />
+                <Route path="/resetPassword" element={<ResetPassword />} />
+              </>
+            )}
             <Route path="/Footer" element={<Footer />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/CompleteProfile" element={<CompleteProfile />} />
@@ -78,9 +91,11 @@ function App() {
             <Route path="/Individual" element={<IndividualAccountPage />} />
 
             <Route path="/" element={<TempComponent title="Home" />} />
-            <Route path="/About" element={<TempComponent title="about" />} />
+            <Route path="/About" element={<Spinner />} />
+            {/* <Route path="/About" element={<TempComponent title="about" />} /> */}
             <Route path="/Features" element={<SelectMultiImages />} />
             <Route path="/Contact" element={<RatedBusinessList />} />
+            <Route path="/*" element={<NotFoundpage />} />
           </Routes>
         </div>
         <Footer />

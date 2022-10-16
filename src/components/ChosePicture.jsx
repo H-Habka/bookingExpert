@@ -54,14 +54,14 @@ const ChosePicture = ({ register, imageFile, reset }) => {
         <input {...register} type="file" className="hidden" />
       </label>
       {image && (
-        <button
+        <div
           onClick={handleClearImageClick}
-          className={`absolute  bottom-1 start-1/2 ${
+          className={`cursor-pointer w-fit absolute  bottom-1 start-1/2 ${
             lang === "ar" ? "translate-x-1/2" : "-translate-x-1/2"
           } hidden group-hover:block`}
         >
           <DeleteIcon width={30} height={30} />
-        </button>
+        </div>
       )}
     </div>
   );

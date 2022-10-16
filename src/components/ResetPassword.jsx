@@ -9,6 +9,7 @@ import { validitor } from "../formValidator";
 import api from "../api";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import CustomButton2 from "./CustomButton2";
 
 const ResetPassword = () => {
   // const [isEmailOrMessageSent, setIsEmailOrMessageSent] = useState(false)
@@ -18,6 +19,7 @@ const ResetPassword = () => {
   });
   const [searchParams] = useSearchParams();
   const { id } = Object.fromEntries([...searchParams]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const {
     register,
@@ -27,15 +29,17 @@ const ResetPassword = () => {
   } = useForm();
   const onSubmit = (data) => {
     data.user_id = id;
-
+    setLoading(true);
     toast.promise(api.password.reset(data), {
       loading: t("Loading"),
       success: (res) => {
+        setLoading(false);
         console.log({ res });
-        navigate(`/auth/login`);
+        setTimeout(() => navigate(`/auth/login`), 1500);
         return <p>{res?.data?.message}</p>;
       },
       error: (err) => {
+        setLoading(false);
         console.log({ err });
         return <p>{err?.response?.data?.message || err?.message}</p>;
       },
@@ -96,12 +100,7 @@ const ResetPassword = () => {
               />
             </div>
             <div className="px-2">
-              <button
-                type="submit"
-                className="sm:text-lg md:text-xl text-white bg-four border-2 border-four rounded-lg w-full py-2 hover:text-four hover:bg-white dark:hover:bg-darkbg1 transition-all duration-300"
-              >
-                {t("Reset Password")}
-              </button>
+              <CustomButton2 title="Reset Password" disabled={loading} />
             </div>
           </div>
           {isMd && (

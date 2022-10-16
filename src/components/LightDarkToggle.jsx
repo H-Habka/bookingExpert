@@ -3,7 +3,7 @@ import { ReactComponent as MoonIcon } from "../icons/moon.svg";
 import { useState} from "react";
 import { useStore } from "../store";
 
-const LightDarkToggle = ({ size }) => {
+const LightDarkToggle = ({ className }) => {
   const isDark = useStore((state) => state.isDark);
   const toggleMode = useStore((state) => state.toggleMode);
 
@@ -13,9 +13,9 @@ const LightDarkToggle = ({ size }) => {
   return (
     <div className="w-fit cursor-pointer" onClick={handleModeToggleClick}>
       {isDark ? (
-        <MoonIcon width={size} height={size} fill="#777" color="#333" />
+        <MoonIcon className={className} fill="#777" color="#333" />
       ) : (
-        <SunIcon width={size} height={size} fill="yellow" color="yellow" />
+        <SunIcon className={className} fill="yellow" color="yellow" />
       )}
     </div>
   );

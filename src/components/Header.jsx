@@ -74,7 +74,7 @@ const Header = ({ refprop }) => {
         <div className="flex sm:gap-4 gap-1 items-center z-[1]">
           <div className=" border-4 hover:border-blue-500 border-transparent transition-all duration-300 rounded-full">
             <div className="flex item-center justify-center rounded-full bg-[#99a3fb]">
-              <LightDarkToggle size={36} />
+              <LightDarkToggle className="w-[36px] h-[36px]" />
             </div>
           </div>
           <div className="group relative cursor-pointer border-4 hover:border-blue-500 rounded-full border-transparent transition-all duration-300">
@@ -142,16 +142,16 @@ const Header = ({ refprop }) => {
           >
             <NavList navData={navData} />
           </div>
-          <button
+          <div
             onClick={() => setIsExpanded((prev) => !prev)}
-            className="w-full flex justify-center items-center dark:bg-darkbg0  bg-gray-200 border-y border-gray-300"
+            className="w-full cursor-pointer flex justify-center items-center dark:bg-darkbg0  bg-gray-200 border-y border-gray-300"
           >
             {isExpanded ? (
               <DoubleArrowUp width={24} height={24} />
             ) : (
               <DoubleArrowDown width={24} height={24} />
             )}
-          </button>
+          </div>
         </div>
       )}
       {location.pathname === "/profile" && <ProfileProgress persentage={20} />}

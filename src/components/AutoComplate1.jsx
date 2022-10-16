@@ -13,6 +13,7 @@ let Data = [
   "+557",
   "+589",
   "+984",
+  "+44",
 ];
 const AutoComplate1 = ({
   type,
@@ -45,7 +46,7 @@ const AutoComplate1 = ({
     <div data-aos="flip-up" className="w-fit relative group z-10">
       <input
         {...register("phone_code", {
-          required: true,
+          // required: true,
           maxLength: 30,
           validate: (value) =>
             Data.find((item) => item === value) ? true : false,
@@ -53,7 +54,7 @@ const AutoComplate1 = ({
         autoComplete="off"
         // value={value}
         type={type}
-        className={`dark:bg-darkbg1 dark:text-darktext dark:placeholder:text-darktext rounded-lg outline-none border  p-2 text-xl placeholder:text-black placeholder:focus:text-transparent dark:placeholder:focus:text-transparent placeholder:transition-all placeholder:duration-500 placeholder:text-sm  ${
+        className={`dark:bg-darkbg1 dark:text-darktext dark:placeholder:text-darktext rounded-lg outline-none border  p-2 text-xl placeholder:text-black placeholder:focus:text-transparent dark:placeholder:focus:text-transparent placeholder:transition-all placeholder:duration-500 placeholder:text-sm disabled:bg-gray-400 ${
           error
             ? "border-red-600 focus:border-red-600"
             : isSubmitSuccessful
@@ -86,7 +87,6 @@ const AutoComplate1 = ({
         <div className="absolute top-full z-[50] bg-gray-300 w-full text-lg max-h-[200px] overflow-auto scrollbar-thin">
           {filterdData.map((item, idx) => (
             <button
-              // onClick={() => setValue(item)}
               onClick={() => reset({ phone_code: item })}
               className="p-1 block w-full"
               key={idx}

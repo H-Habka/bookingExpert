@@ -8,10 +8,16 @@ import { validitor } from "../formValidator";
 import api from "../api";
 import { useTranslation } from "react-i18next";
 import TextWithUnderLineEffect from "./TextWithUnderLineEffect";
+import uuid from "react-uuid";
+import toast from "react-hot-toast";
+import { useStore } from "../store";
+import { useNavigate } from "react-router-dom";
+import CustomButton2 from "./CustomButton2";
 
-const Signup = () => {
+const Signup = ({ role_id }) => {
   const { t } = useTranslation();
   const [emailOrPhone, setEmailOrPhone] = useState("email");
+  const [loading, setLoading] = useState(false);
   const {
     reset,
     register,
@@ -25,24 +31,45 @@ const Signup = () => {
       phone_number: "",
       email: "",
       password: "",
-      phone_code: "",
+      phone_code: "+44",
     },
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
-    reset({ email: "", phone_number: "", phone_code: "" });
+    reset({ email: "", phone_number: "" });
   }, [emailOrPhone]);
 
   const onSubmit = (data) => {
-    data.fcm_token = "GUID";
+    data.fcm_token = uuid();
     data.register_type = 1;
     data.register_using = emailOrPhone === "email" ? 0 : 1;
-    data.iso_code = "SY";
+    data.iso_code = "GB";
     console.log(data);
-    api.customer
-      .register(data)
-      .then((res) => console.log({ res }))
-      .catch((err) => console.log({ err }));
+    setLoading(true);
+    toast.promise(
+      role_id === 2 ? api.customer.register(data) : api.provider.register(data),
+      {
+        loading: t("Loading"),
+        success: (res) => {
+          setLoading(false);
+          console.log({ res });
+          setTimeout(
+            () =>
+              navigate(
+                `/auth/enterCode?id=${res?.data?.data?.id}&type=register`
+              ),
+            1500
+          );
+          return <p>{res?.data?.message}</p>;
+        },
+        error: (err) => {
+          setLoading(false);
+          console.log({ err });
+          return <p>{err?.response?.data?.message || err?.message}</p>;
+        },
+      }
+    );
   };
   return (
     <div className="flex flex-col items-center justify-center">
@@ -170,12 +197,7 @@ const Signup = () => {
           </div>
         </div>
         <div className="w-[300px] md:w-[400px] mx-auto">
-          <button
-            type="submit"
-            className="sm:text-lg md:text-xl text-white bg-four border-2 border-four rounded-lg w-full py-2 hover:text-four hover:bg-white dark:hover:bg-darkbg1 transition-all duration-300"
-          >
-            {t("signup")}
-          </button>
+          <CustomButton2 title="signup" disabled={loading} />
           <div className="mt-4">
             <div className="relative z-[1] ">
               <div className="absolute w-full h-1 bg-five top-1/2 -translate-y-1/2 z-[-1] rounded-2xl" />

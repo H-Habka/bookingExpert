@@ -13,7 +13,7 @@ const navData = [
 ];
 
 const Auth = () => {
-  const {t} = useTranslation()
+  const { t } = useTranslation();
   const [loginOrSignUp, setLoginOrSignUp] = useState("login");
   const [customerOrProvider, setCustomerOrProvider] = useState(null);
   const location = useLocation();
@@ -21,6 +21,10 @@ const Auth = () => {
     let activeItem = navData.filter((item) => item.to === location.pathname)[0];
     setLoginOrSignUp(activeItem ? activeItem.title : "");
   }, [location]);
+
+  useEffect(() => {
+    setCustomerOrProvider(null);
+  }, [loginOrSignUp]);
   return (
     <div className="flex justify-center items-center md:pt-12 pt-6 pb-10">
       <div
@@ -29,13 +33,20 @@ const Auth = () => {
         }  sm:py-6 py-2 sm:border-2 rounded-xl min-w-[300px] w-[80%] max-w-[800px]`}
       >
         <div data-aos="fade-down" className="w-72 mx-auto">
-          <NavList
-            navData={navData}
-            truck={true}
-          />
+          <NavList navData={navData} truck={true} />
         </div>
-        {customerOrProvider && loginOrSignUp === "login" && <Login />}
-        {customerOrProvider && loginOrSignUp === "signup" && <Signup />}
+        {customerOrProvider && loginOrSignUp === "login" && (
+          <Login
+            setCustomerOrProvider={setCustomerOrProvider}
+            role_id={customerOrProvider === "customer" ? 2 : 3}
+          />
+        )}
+        {customerOrProvider && loginOrSignUp === "signup" && (
+          <Signup
+            setCustomerOrProvider={setCustomerOrProvider}
+            role_id={customerOrProvider === "customer" ? 2 : 3}
+          />
+        )}
         {!customerOrProvider && (
           <div
             className="grid gap-2 md:gap-10 mt-10"

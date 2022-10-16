@@ -12,54 +12,73 @@ import { toast } from "react-hot-toast";
 import { useStore } from "../store";
 import { useTranslation } from "react-i18next";
 import TextWithUnderLineEffect from "./TextWithUnderLineEffect";
+import uuid from "react-uuid";
+import CustomButton2 from "./CustomButton2";
 
-const Login = () => {
+const Login = ({ role_id }) => {
   const { t } = useTranslation();
   const [emailOrPhone, setEmailOrPhone] = useState("email");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const setUser = useStore((state) => state.setUser);
   const user = useStore((state) => state.user);
 
-  console.log({ user });
   const {
     register,
     handleSubmit,
     watch,
     reset,
     formState: { errors, isSubmitSuccessful },
-  } = useForm();
+  } = useForm({ defaultValues: { phone_code: "+44" } });
 
   useEffect(() => {
-    reset({ email: "", phone_number: "", phone_code: "" });
+    reset({ email: "", phone_number: "" });
   }, [emailOrPhone]);
   const onSubmit = (data) => {
-    data.fcm_token = "GUID";
+    data.fcm_token = uuid();
     data.register_using = emailOrPhone === "email" ? 0 : 1;
-    data.iso_code = "SY";
-    data.role_id = 2; // 2-user , 3-provider
+    data.iso_code = "GB";
+    data.role_id = role_id;
     console.log(data);
+    setLoading(true);
 
     toast.promise(api.providerOrCustomer.login(data), {
       loading: t("Loading"),
       success: (res) => {
+        setLoading(false);
         console.log({ res });
-        setUser(res?.data?.data);
-        localStorage.setItem("user", JSON.stringify(res?.data?.data));
-        navigate("/");
+        if (res?.data?.statusCode === 200) {
+          setUser(res?.data?.data);
+          localStorage.setItem("user", JSON.stringify(res?.data?.data));
+          setTimeout(() => navigate("/"), 1500);
+        }
         return <p>{res?.data?.message}</p>;
       },
       error: (err) => {
+        setLoading(false);
         console.log({ err });
+        if (err?.response?.data?.statusCode === 301) {
+          api.otp.resend({ user_id: err?.response?.data?.data?.id });
+          setTimeout(
+            () =>
+              navigate(
+                `/auth/enterCode?id=${err?.response?.data?.data?.id}&type=register`
+              ),
+            1500
+          );
+        }
         return <p>{err?.response?.data?.message || err?.message}</p>;
       },
     });
   };
-  useEffect(() => {
-    console.log("Component Re Renders");
-  });
   return (
     <div className="flex flex-col items-center justify-center">
-      <form className="z-[1]" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="z-[1]"
+        onSubmit={handleSubmit(onSubmit)}
+        autoComplete="off"
+        autoCorrect="off"
+      >
         <div className="my-10 z-10">
           <div>
             {emailOrPhone === "email" ? (
@@ -139,12 +158,7 @@ const Login = () => {
           />
         </div>
         <div className="w-[300px] md:w-[400px] mx-auto">
-          <button
-            type="submit"
-            className="sm:text-lg md:text-xl text-white bg-four border-2 border-four rounded-lg w-full py-2 hover:text-four hover:bg-white dark:hover:bg-darkbg1 transition-all duration-300"
-          >
-            {t("login")}
-          </button>
+          <CustomButton2 title="login" disabled={loading} />
           <div className="mt-4">
             <div className="relative z-[1] ">
               <div className="absolute w-full h-1 bg-five top-1/2 -translate-y-1/2 z-[-1] rounded-2xl" />
@@ -163,7 +177,7 @@ const Login = () => {
           </div>
         </div>
       </form>
-      <Link to="/auth/forgetPassword" className="flex justify-end m-1 mt-6">
+      <Link to={`/auth/forgetPassword?role_id=${role_id}`} className="flex justify-end m-1 mt-6">
         <TextWithUnderLineEffect title="Forget password" />
       </Link>
     </div>
